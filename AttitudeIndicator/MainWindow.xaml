@@ -1,0 +1,108 @@
+﻿<Window x:Class="AttitudeIndicator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AttitudeIndicator"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        mc:Ignorable="d"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        Title="Attitude Indicator - Mechatronik Labor 2019" Height="450" Width="800">
+    <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="200"/>
+    </Grid.ColumnDefinitions>
+
+    <h:HelixViewport3D Grid.ColumnSpan="2" ModelUpDirection="0 0 1" >
+      <h:DefaultLights/>
+
+      
+      <!--<h:CombinedManipulator/>-->
+
+      <h:FileModelVisual3D x:Name="Plane" Source="../../Resouces/Blackbird.obj">
+        <h:FileModelVisual3D.DefaultMaterial>
+          <DiffuseMaterial>
+            <DiffuseMaterial.Brush>
+              <SolidColorBrush Color="Gray" Opacity="1"/>
+            </DiffuseMaterial.Brush>
+          </DiffuseMaterial>
+        </h:FileModelVisual3D.DefaultMaterial>
+        <h:FileModelVisual3D.Transform>
+          <Transform3DGroup>
+            <ScaleTransform3D ScaleX="0.002" ScaleY="0.002" ScaleZ="0.002"/>
+            <RotateTransform3D>
+              <RotateTransform3D.Rotation>
+                <AxisAngleRotation3D Angle="90" Axis="1,0,0" />
+              </RotateTransform3D.Rotation>
+            </RotateTransform3D>
+            <RotateTransform3D>
+              <RotateTransform3D.Rotation>
+                <AxisAngleRotation3D Angle="90" Axis="0,0,1" />
+              </RotateTransform3D.Rotation>
+            </RotateTransform3D>
+            <TranslateTransform3D OffsetX="-3" OffsetZ="-1"/>
+            <MatrixTransform3D x:Name="PlaneTranform" Matrix="{Binding AirPlaneTransform}"/>
+          </Transform3DGroup>
+        </h:FileModelVisual3D.Transform>
+      </h:FileModelVisual3D>
+      
+      <h:CoordinateSystemVisual3D ArrowLengths="2" >
+        <h:CoordinateSystemVisual3D.Transform>
+          <Transform3DGroup>
+            <RotateTransform3D>
+              <RotateTransform3D.Rotation>
+                <AxisAngleRotation3D Angle="180" Axis="1,0,0" />
+              </RotateTransform3D.Rotation>
+            </RotateTransform3D>
+            <MatrixTransform3D Matrix="{Binding ElementName=PlaneTranform, Path=Matrix}"/>
+          </Transform3DGroup>
+        </h:CoordinateSystemVisual3D.Transform>
+      </h:CoordinateSystemVisual3D>
+
+      <h:GridLinesVisual3D Width="8" Length="8" MinorDistance="1" MajorDistance="1" Thickness="0.01"/>
+      <!--<h:CoordinateSystemVisual3D/>-->
+      
+      
+      <h:CoordinateSystemVisual3D>
+        <h:CoordinateSystemVisual3D.Transform>
+          <Transform3DGroup>
+            <TranslateTransform3D OffsetZ="2"/>
+          </Transform3DGroup>
+          
+
+        </h:CoordinateSystemVisual3D.Transform>
+      </h:CoordinateSystemVisual3D>
+      
+      
+      </h:HelixViewport3D>
+
+
+    <DockPanel Grid.Column="1">
+
+      <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+        <Button DockPanel.Dock="Top" Height="29" Padding="2">
+          <fa:ImageAwesome Icon="LifeSaver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="True" SpinDuration="4"/>
+        </Button>
+      </StackPanel>
+      
+      
+      <Slider  DockPanel.Dock="Top" Name = "slider" 
+         HorizontalAlignment="Stretch"
+         Maximum = "90" 
+               Minimum="-90"
+         Value = "{Binding Phi}" />
+      <Slider Margin="2" DockPanel.Dock="Top" Name = "sliderTheta" 
+         HorizontalAlignment="Stretch"
+         Maximum = "90" 
+               Minimum="-90"
+         Value = "{Binding Theta}" />
+      <Slider  DockPanel.Dock="Top" Name = "sliderPhi" 
+         HorizontalAlignment="Stretch"
+         Maximum = "90" 
+               Minimum="-90"
+         Value = "{Binding Phi}" />
+    </DockPanel>
+        
+    </Grid>
+</Window>
