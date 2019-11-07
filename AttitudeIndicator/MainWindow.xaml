@@ -14,7 +14,7 @@
       <ColumnDefinition Width="200"/>
     </Grid.ColumnDefinitions>
 
-    <h:HelixViewport3D Grid.ColumnSpan="2" ModelUpDirection="0 0 1" >
+    <h:HelixViewport3D Grid.ColumnSpan="2" ModelUpDirection="0 0 1" ViewCubeHorizontalPosition="Left">
       <h:DefaultLights/>
 
       
@@ -78,16 +78,20 @@
       </h:HelixViewport3D>
 
 
-    <DockPanel Grid.Column="1" LastChildFill="False">
+    <StackPanel Grid.Column="1" >
 
-      <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-        <Button DockPanel.Dock="Top" Height="29" Padding="2">
-          <fa:ImageAwesome Icon="LifeSaver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="True" SpinDuration="4"/>
-        </Button>
+      <StackPanel  Orientation="Horizontal" DataContext="{Binding SerialDataConnection}">
+        <ComboBox Width="120" Margin="3" SelectedItem="{Binding SelectedPortName}" ItemsSource="{Binding PortList}">
+          
+        </ComboBox>
+
+        <ToggleButton DockPanel.Dock="Top" Height="29" Padding="2" IsChecked="{Binding Connected}">
+          <fa:ImageAwesome Icon="LifeSaver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="{Binding Connected}" SpinDuration="4"/>
+        </ToggleButton>
       </StackPanel>
       
       
-      <Slider  DockPanel.Dock="Top" Name = "slider" 
+      <Slider  Name = "slider" 
          HorizontalAlignment="Stretch"
          Maximum = "90" 
                Minimum="-90"
@@ -102,7 +106,19 @@
          Maximum = "90" 
                Minimum="-90"
          Value = "{Binding Phi}" />
-    </DockPanel>
-        
-    </Grid>
+
+      <local:EulerAnglesDisplay/>
+
+      <Button >
+        <StackPanel Orientation="Horizontal" Height="20">
+          <fa:ImageAwesome Icon="AlignCenter"/>
+          <TextBlock VerticalAlignment="Center" FontSize="20"> RESET </TextBlock>
+        </StackPanel>
+      </Button>
+      
+    </StackPanel>
+
+    
+
+  </Grid>
 </Window>

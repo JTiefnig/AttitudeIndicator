@@ -14,6 +14,7 @@ namespace AttitudeIndicator.ViewModels
         public ApplicationViewModel()
         {
             AirPlaneMatrixTransform = new Matrix3D();
+            SerialDataConnection = new SerialCommunicationViewModel();
 
  
         }
@@ -36,6 +37,12 @@ namespace AttitudeIndicator.ViewModels
 
 
         #region Properties
+
+
+        public SerialCommunicationViewModel SerialDataConnection
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Psi ... Yaw
