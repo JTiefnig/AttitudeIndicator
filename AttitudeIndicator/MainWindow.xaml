@@ -42,7 +42,7 @@
               </RotateTransform3D.Rotation>
             </RotateTransform3D>
             <TranslateTransform3D OffsetX="-3" OffsetZ="-1"/>
-            <MatrixTransform3D x:Name="PlaneTranform" Matrix="{Binding AirPlaneTransform}"/>
+            <MatrixTransform3D x:Name="PlaneTranform" Matrix="{Binding AirPlaneMatrixTransform}"/>
           </Transform3DGroup>
         </h:FileModelVisual3D.Transform>
       </h:FileModelVisual3D>
@@ -78,7 +78,7 @@
       </h:HelixViewport3D>
 
 
-    <DockPanel Grid.Column="1">
+    <DockPanel Grid.Column="1" LastChildFill="False">
 
       <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
         <Button DockPanel.Dock="Top" Height="29" Padding="2">
@@ -91,7 +91,7 @@
          HorizontalAlignment="Stretch"
          Maximum = "90" 
                Minimum="-90"
-         Value = "{Binding Phi}" />
+         Value = "{Binding Psi}" />
       <Slider Margin="2" DockPanel.Dock="Top" Name = "sliderTheta" 
          HorizontalAlignment="Stretch"
          Maximum = "90" 

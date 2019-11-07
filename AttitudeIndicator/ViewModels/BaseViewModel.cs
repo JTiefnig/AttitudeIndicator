@@ -11,7 +11,7 @@ namespace AttitudeIndicator.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(String Name) => this?.PropertyChanged(this, new PropertyChangedEventArgs(Name));
+        public void OnPropertyChanged(String Name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Name));
 
     }
 }

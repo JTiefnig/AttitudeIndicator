@@ -13,7 +13,7 @@ namespace AttitudeIndicator.ViewModels
 
         public ApplicationViewModel()
         {
-            AirPlaneTransform = new Matrix3D();
+            AirPlaneMatrixTransform = new Matrix3D();
 
  
         }
@@ -22,7 +22,7 @@ namespace AttitudeIndicator.ViewModels
         void CalculateTransform()
         {
 
-            var q = new Quaternion(new Vector3D(1,0,0), Psi);
+            var q = new Quaternion(new Vector3D(1, 0, 0), Psi);
 
             q *= new Quaternion(new Vector3D(0, 1, 0), Theta);
             q *= new Quaternion(new Vector3D(0, 0, 1), Phi);
@@ -30,7 +30,7 @@ namespace AttitudeIndicator.ViewModels
 
             var mat = new Matrix3D();
             mat.Rotate(q);
-            this.AirPlaneTransform = mat; 
+            this.AirPlaneMatrixTransform = mat;
         }
 
 
@@ -90,13 +90,13 @@ namespace AttitudeIndicator.ViewModels
         /// Representation of the Orientation in 3d
         /// </summary>
         private Matrix3D _airplaneTranform;
-        public Matrix3D AirPlaneTransform
+        public Matrix3D AirPlaneMatrixTransform
         {
             get => _airplaneTranform;
             set
             {
                 _airplaneTranform = value;
-                OnPropertyChanged(nameof(AirPlaneTransform));
+                OnPropertyChanged(nameof(AirPlaneMatrixTransform));
             }
 
         }
