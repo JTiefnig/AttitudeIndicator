@@ -10,7 +10,7 @@ namespace UDPListener
 {
     class Program
     {
-        private const int listenPort = 11000;
+        private const int listenPort = 9200;
 
         private static void StartListener()
         {

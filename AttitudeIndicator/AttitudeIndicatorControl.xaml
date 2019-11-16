@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="AttitudeIndicator.AttitudeIndicatorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AttitudeIndicator"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200">
+    <Grid>
+
+    <Ellipse  Margin="30" >
+      <Ellipse.Fill>
+        <SolidColorBrush Color="LightGray" Opacity="0.5"/>
+      </Ellipse.Fill>
+    </Ellipse>
+
+    <Grid x:Name="MainCircle" >
+      <Grid.LayoutTransform>
+        <RotateTransform Angle="{Binding Phi}" CenterX="0.5" CenterY="0.5"/>
+      </Grid.LayoutTransform>
+
+      <Canvas x:Name="HorizontCanvas" />
+
+      <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Line VerticalAlignment="Center" X1="0" X2="20" Stroke="Black" StrokeThickness="3" />
+        <Line VerticalAlignment="Center" X1="40" X2="60" Stroke="Black" StrokeThickness="3" />
+      </Grid>
+      
+      
+    </Grid>
+  </Grid>
+</UserControl>

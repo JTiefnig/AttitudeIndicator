@@ -20,16 +20,16 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <TextBlock Text="Pitch" Margin="1" Grid.Row="0" />
+    <TextBlock Text="Yaw" Margin="1" Grid.Row="0" />
     <TextBlock Text="&#x03C8; :" FontSize="25" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Center" Grid.Row="1"/>
     <TextBlock Text="{Binding Psi, StringFormat=N2}" VerticalAlignment="Center" FontSize="25" Grid.Column="1" Grid.Row="1"/>
 
 
-    <TextBlock Text="Roll" Margin="1" Grid.Row="2"/>
+    <TextBlock Text="Pitch" Margin="1" Grid.Row="2"/>
     <TextBlock Text="&#x03D1; :" FontSize="25" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Center" Grid.Row="3"/>
     <TextBlock Text="{Binding Theta, StringFormat=N2}" VerticalAlignment="Center" FontSize="25" Grid.Column="1" Grid.Row="3"/>
 
-    <TextBlock Text="Yaw" Margin="1" Grid.Row="4"/>
+    <TextBlock Text="Roll" Margin="1" Grid.Row="4"/>
     <TextBlock Text="&#x03C6; :" FontSize="25" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Center" Grid.Row="5"/>
     <TextBlock Text="{Binding Phi, StringFormat=N2}" VerticalAlignment="Center" FontSize="25" Grid.Column="1" Grid.Row="5"/>
 

@@ -7,17 +7,23 @@
         xmlns:h="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        Title="Attitude Indicator - Mechatronik Labor 2019" Height="450" Width="800">
+        Title="Attitude Indicator - Mechatronik Labor 2019" Height="550" Width="800">
     <Grid>
     <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="300"/>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="200"/>
     </Grid.ColumnDefinitions>
 
-    <h:HelixViewport3D Grid.ColumnSpan="2" ModelUpDirection="0 0 1" ViewCubeHorizontalPosition="Left">
+    <h:HelixViewport3D Grid.ColumnSpan="3" ModelUpDirection="0 0 1" ViewCubeHorizontalPosition="Left" >
+      <h:HelixViewport3D.DefaultCamera>
+        <PerspectiveCamera Position="-14,10,10" LookDirection="14,-10,-10" UpDirection="0,0,1" />
+      </h:HelixViewport3D.DefaultCamera>
+      
       <h:DefaultLights/>
 
       
+
       <!--<h:CombinedManipulator/>-->
 
       <h:FileModelVisual3D x:Name="Plane" Source="../../Resouces/Blackbird.obj" >
@@ -74,7 +80,7 @@
         </h:CoordinateSystemVisual3D.Transform>
       </h:CoordinateSystemVisual3D>
 
-      <h:GridLinesVisual3D Width="8" Length="8" MinorDistance="1" MajorDistance="1" Thickness="0.01"/>
+      <h:GridLinesVisual3D Width="10" Length="10" MinorDistance="1" MajorDistance="1" Thickness="0.01"/>
       <!--<h:CoordinateSystemVisual3D/>-->
       
       
@@ -89,18 +95,23 @@
       
       </h:HelixViewport3D>
 
+    <local:AttitudeIndicatorControl Height="200" Width="200" VerticalAlignment="Top" Margin="20"/>
 
-    <StackPanel Grid.Column="1" >
+
+    <StackPanel Grid.Column="2" >
 
       <Border Style="{StaticResource LightBorder}">
-        <StackPanel  Orientation="Horizontal" DataContext="{Binding SerialDataConnection}" >
-          <ComboBox Width="120" Margin="3" SelectedItem="{Binding SelectedPortName}" ItemsSource="{Binding PortList}">
+        <StackPanel>
+          <TextBlock>Serial Connection</TextBlock>
+          <StackPanel  Orientation="Horizontal" DataContext="{Binding SerialDataConnection}" >
+            <ComboBox Width="120" Margin="3" SelectedItem="{Binding SelectedPortName}" ItemsSource="{Binding PortList}">
 
-          </ComboBox>
+            </ComboBox>
 
-          <ToggleButton DockPanel.Dock="Top" Height="29" Padding="2" IsChecked="{Binding Connected}">
-            <fa:ImageAwesome Icon="LifeSaver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="{Binding Connected}" SpinDuration="4"/>
-          </ToggleButton>
+            <ToggleButton DockPanel.Dock="Top" Height="29" Padding="2" IsChecked="{Binding Connected}">
+              <fa:ImageAwesome Icon="LifeSaver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="{Binding Connected}" SpinDuration="4"/>
+            </ToggleButton>
+          </StackPanel>
         </StackPanel>
       </Border>
       

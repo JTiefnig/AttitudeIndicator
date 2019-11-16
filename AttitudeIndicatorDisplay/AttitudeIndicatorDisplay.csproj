@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2BB8B65A-B372-4C14-8205-B31751005AE0}</ProjectGuid>
+    <ProjectGuid>{B1DF9DD3-F092-4FC2-8A59-3969B8706D66}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AttitudeIndicator</RootNamespace>
-    <AssemblyName>AttitudeIndicator</AssemblyName>
+    <RootNamespace>AttitudeIndicatorDisplay</RootNamespace>
+    <AssemblyName>AttitudeIndicatorDisplay</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,12 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
-      <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
-    </Reference>
-    <Reference Include="HelixToolkit.Wpf, Version=2.9.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
-      <HintPath>..\packages\HelixToolkit.Wpf.2.9.0\lib\net45\HelixToolkit.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -61,32 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AttitudeIndicatorControl.xaml.cs">
-      <DependentUpon>AttitudeIndicatorControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EulerAnglesDisplay.xaml.cs">
-      <DependentUpon>EulerAnglesDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="QuaternionDisplay.xaml.cs">
-      <DependentUpon>QuaternionDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UDPSettingsControl.xaml.cs">
-      <DependentUpon>UDPSettingsControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\ApplicationViewModel.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\RelayCommand.cs" />
-    <Compile Include="ViewModels\SerialCommunicationViewModel.cs" />
-    <Compile Include="ViewModels\SerialMessageProcessor.cs" />
-    <Compile Include="ViewModels\UdpBroadcast.cs" />
-    <Page Include="AttitudeIndicatorControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EulerAnglesDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,18 +67,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="QuaternionDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UDPSettingsControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -130,13 +86,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resouces\Blackbird.obj" />
-    <None Include="Resouces\Blackbird.stl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
