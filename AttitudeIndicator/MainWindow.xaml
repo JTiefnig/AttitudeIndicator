@@ -20,7 +20,7 @@
       
       <!--<h:CombinedManipulator/>-->
 
-      <h:FileModelVisual3D x:Name="Plane" Source="../../Resouces/Blackbird.obj">
+      <h:FileModelVisual3D x:Name="Plane" Source="../../Resouces/Blackbird.obj" >
         <h:FileModelVisual3D.DefaultMaterial>
           <DiffuseMaterial>
             <DiffuseMaterial.Brush>
@@ -30,32 +30,46 @@
         </h:FileModelVisual3D.DefaultMaterial>
         <h:FileModelVisual3D.Transform>
           <Transform3DGroup>
-            <ScaleTransform3D ScaleX="0.002" ScaleY="0.002" ScaleZ="0.002"/>
-            <RotateTransform3D>
-              <RotateTransform3D.Rotation>
-                <AxisAngleRotation3D Angle="90" Axis="1,0,0" />
-              </RotateTransform3D.Rotation>
-            </RotateTransform3D>
-            <RotateTransform3D>
-              <RotateTransform3D.Rotation>
-                <AxisAngleRotation3D Angle="90" Axis="0,0,1" />
-              </RotateTransform3D.Rotation>
-            </RotateTransform3D>
-            <TranslateTransform3D OffsetX="-3" OffsetZ="-1"/>
+            
+            
+            <Transform3DGroup>
+              <ScaleTransform3D ScaleX="0.002" ScaleY="0.002" ScaleZ="0.002"/>
+              <RotateTransform3D>
+                <RotateTransform3D.Rotation>
+                  <AxisAngleRotation3D Angle="-90" Axis="0,0,1" />
+                </RotateTransform3D.Rotation>
+              </RotateTransform3D>
+              <RotateTransform3D>
+                <RotateTransform3D.Rotation>
+                  <AxisAngleRotation3D Angle="90" Axis="0,1,0" />
+                </RotateTransform3D.Rotation>
+              </RotateTransform3D>
+  
+              <TranslateTransform3D OffsetX="-3" OffsetZ="1"/>
+            </Transform3DGroup>
+
             <MatrixTransform3D x:Name="PlaneTranform" Matrix="{Binding AirPlaneMatrixTransform}"/>
+            <RotateTransform3D>
+              <RotateTransform3D.Rotation>
+                <AxisAngleRotation3D Angle="180" Axis="1,0,0" />
+              </RotateTransform3D.Rotation>
+            </RotateTransform3D>
+            
           </Transform3DGroup>
+          
         </h:FileModelVisual3D.Transform>
       </h:FileModelVisual3D>
       
       <h:CoordinateSystemVisual3D ArrowLengths="2" >
         <h:CoordinateSystemVisual3D.Transform>
           <Transform3DGroup>
+            <MatrixTransform3D Matrix="{Binding ElementName=PlaneTranform, Path=Matrix}"/>
             <RotateTransform3D>
               <RotateTransform3D.Rotation>
                 <AxisAngleRotation3D Angle="180" Axis="1,0,0" />
               </RotateTransform3D.Rotation>
             </RotateTransform3D>
-            <MatrixTransform3D Matrix="{Binding ElementName=PlaneTranform, Path=Matrix}"/>
+            
           </Transform3DGroup>
         </h:CoordinateSystemVisual3D.Transform>
       </h:CoordinateSystemVisual3D>
@@ -64,15 +78,13 @@
       <!--<h:CoordinateSystemVisual3D/>-->
       
       
-      <h:CoordinateSystemVisual3D>
-        <h:CoordinateSystemVisual3D.Transform>
+      <!--<h:CoordinateSystemVisual3D >
+         <h:CoordinateSystemVisual3D.Transform>
           <Transform3DGroup>
             <TranslateTransform3D OffsetZ="2"/>
           </Transform3DGroup>
-          
-
         </h:CoordinateSystemVisual3D.Transform>
-      </h:CoordinateSystemVisual3D>
+      </h:CoordinateSystemVisual3D>-->
       
       
       </h:HelixViewport3D>
@@ -80,21 +92,24 @@
 
     <StackPanel Grid.Column="1" >
 
-      <StackPanel  Orientation="Horizontal" DataContext="{Binding SerialDataConnection}">
-        <ComboBox Width="120" Margin="3" SelectedItem="{Binding SelectedPortName}" ItemsSource="{Binding PortList}">
-          
-        </ComboBox>
+      <Border Style="{StaticResource LightBorder}">
+        <StackPanel  Orientation="Horizontal" DataContext="{Binding SerialDataConnection}" >
+          <ComboBox Width="120" Margin="3" SelectedItem="{Binding SelectedPortName}" ItemsSource="{Binding PortList}">
 
-        <ToggleButton DockPanel.Dock="Top" Height="29" Padding="2" IsChecked="{Binding Connected}">
-          <fa:ImageAwesome Icon="LifeSaver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="{Binding Connected}" SpinDuration="4"/>
-        </ToggleButton>
-      </StackPanel>
+          </ComboBox>
+
+          <ToggleButton DockPanel.Dock="Top" Height="29" Padding="2" IsChecked="{Binding Connected}">
+            <fa:ImageAwesome Icon="LifeSaver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="{Binding Connected}" SpinDuration="4"/>
+          </ToggleButton>
+        </StackPanel>
+      </Border>
+      
       
       
       <Slider  Name = "slider" 
          HorizontalAlignment="Stretch"
-         Maximum = "90" 
-               Minimum="-90"
+         Maximum = "180" 
+               Minimum="-180"
          Value = "{Binding Psi}" />
       <Slider Margin="2" DockPanel.Dock="Top" Name = "sliderTheta" 
          HorizontalAlignment="Stretch"
@@ -107,15 +122,20 @@
                Minimum="-90"
          Value = "{Binding Phi}" />
 
+      <TextBlock Margin="0 10 0 0" FontSize="16" >Euler Angles</TextBlock>
       <local:EulerAnglesDisplay/>
+      <TextBlock Margin="0 10 0 0" FontSize="16" >Rotation Quaternion</TextBlock>
+      <local:QuaternionDisplay DataContext="{Binding Rotation}"/>
 
-      <Button >
+
+      <!--<Button >
         <StackPanel Orientation="Horizontal" Height="20">
           <fa:ImageAwesome Icon="AlignCenter"/>
           <TextBlock VerticalAlignment="Center" FontSize="20"> RESET </TextBlock>
         </StackPanel>
-      </Button>
-      
+      </Button>-->
+
+      <local:UDPSettingsControl DataContext="{Binding Broadcaster}" Height="100"></local:UDPSettingsControl>
     </StackPanel>
 
     

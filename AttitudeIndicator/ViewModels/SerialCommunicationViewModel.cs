@@ -7,15 +7,22 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO.Ports;
 using System.Windows;
+using System.Threading;
 
 namespace AttitudeIndicator.ViewModels
 {
     public class SerialCommunicationViewModel: BaseViewModel
     {
 
-        public SerialCommunicationViewModel()
+        public SerialCommunicationViewModel(SerialMessageProcessor prcessor)
         {
-           
+            MessageProcessor = prcessor;
+        }
+
+
+        public SerialMessageProcessor MessageProcessor
+        {
+            get; 
         }
 
         private SerialPort Port { get; set; }
@@ -30,9 +37,14 @@ namespace AttitudeIndicator.ViewModels
                 Port = new SerialPort(SelectedPortName, Baud);
                 Port.Open();
                 Port.DataReceived += DataHandler;
-                
-                
-            }catch(Exception e)
+
+                Port.ReadTimeout = 500;
+
+                Port.PinChanged += SerialEvent;
+
+
+            }
+            catch(Exception e)
             {
                 MessageBox.Show(e.Message);
             }
@@ -40,11 +52,53 @@ namespace AttitudeIndicator.ViewModels
         }
 
 
+        void SerialEvent(object sender, SerialPinChangedEventArgs e)
+        {
+            Console.WriteLine("event Happend :" +
+                e.EventType.ToString());
+        }
+
         private void DataHandler(object sender, SerialDataReceivedEventArgs e)
         {
             var sp = sender as SerialPort;
 
-            Console.WriteLine(sp.ReadExisting());
+            
+            
+
+            try
+            {
+                while (sp.BytesToRead > 0)
+                {
+                    Thread.Sleep(2);
+                    var head = new byte[3];
+                    sp.Read(head, 0, 3);
+
+                    if (head[0] != '>') continue;
+                    if (head[1] != 0 ) continue;
+
+                    //debug
+                    //Console.WriteLine(String.Format("HEAD: {0} {1} {2}", head[0], head[1], head[2]));
+
+                    int dlc = head[2]; // DLC
+                    if (dlc != 9)
+                        continue;
+                    byte[] inp = new byte[dlc];
+                    sp.Read(inp, 0, dlc);
+                    MessageProcessor.ProcessMessage(inp);
+
+                }
+            }catch(Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+            }
+
+            
+            
+            
+            
+
+            
+
         }
 
         public void Disconnect()
@@ -96,4 +150,5 @@ namespace AttitudeIndicator.ViewModels
 
         
     }
+
 }

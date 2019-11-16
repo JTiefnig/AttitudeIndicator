@@ -64,10 +64,18 @@
     <Compile Include="EulerAnglesDisplay.xaml.cs">
       <DependentUpon>EulerAnglesDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="QuaternionDisplay.xaml.cs">
+      <DependentUpon>QuaternionDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UDPSettingsControl.xaml.cs">
+      <DependentUpon>UDPSettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="ViewModels\SerialCommunicationViewModel.cs" />
+    <Compile Include="ViewModels\SerialMessageProcessor.cs" />
+    <Compile Include="ViewModels\UdpBroadcast.cs" />
     <Page Include="EulerAnglesDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -84,7 +92,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="QuaternionDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UDPSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

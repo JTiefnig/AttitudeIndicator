@@ -14,20 +14,28 @@ namespace AttitudeIndicator.ViewModels
         public ApplicationViewModel()
         {
             AirPlaneMatrixTransform = new Matrix3D();
-            SerialDataConnection = new SerialCommunicationViewModel();
+            SerialDataConnection = new SerialCommunicationViewModel(new SerialMessageProcessor(this));
 
- 
+            // for debugging
+            SerialDataConnection.SelectedPortName = "COM5";
+            SerialDataConnection.Connected = true;
+
+
+            Broadcaster = new UdpBroadcast(this);
         }
 
+
+        
 
         void CalculateTransform()
         {
 
-            var q = new Quaternion(new Vector3D(1, 0, 0), Psi);
+            var q = new Quaternion(new Vector3D(0, 0, 1), Psi);
 
             q *= new Quaternion(new Vector3D(0, 1, 0), Theta);
-            q *= new Quaternion(new Vector3D(0, 0, 1), Phi);
+            q *= new Quaternion(new Vector3D(1, 0, 0), Phi);
 
+            this.Rotation = q;
 
             var mat = new Matrix3D();
             mat.Rotate(q);
@@ -36,13 +44,40 @@ namespace AttitudeIndicator.ViewModels
 
 
 
+
+
         #region Properties
 
+        /// <summary>
+        /// ViewModel for Network Broadcasting
+        /// </summary>
+        public UdpBroadcast Broadcaster { get; }
 
+        /// <summary>
+        /// Viewmodel for Serial Input!
+        /// </summary>
         public SerialCommunicationViewModel SerialDataConnection
         {
             get; set;
         }
+
+
+
+
+        /// <summary>
+        /// ViewModel for Network Broadcasting
+        /// </summary>
+        private Quaternion _rotation;
+        public Quaternion Rotation
+        {
+            get => _rotation;
+            private set
+            {
+                _rotation = value;
+                OnPropertyChanged(nameof(Rotation));
+            }
+        }
+
 
         /// <summary>
         /// Psi ... Yaw

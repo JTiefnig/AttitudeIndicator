@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="AttitudeIndicator.QuaternionDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AttitudeIndicator"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="200">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="15"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <TextBlock TextAlignment="Center" Foreground="Gray">W</TextBlock>
+    <TextBlock TextAlignment="Center" Text="{Binding W, StringFormat=N2}" Grid.Row="1" Grid.Column="0" />
+    
+    <TextBlock TextAlignment="Center" Foreground="Gray" Grid.Column="1">X</TextBlock>
+    <TextBlock TextAlignment="Center" Text="{Binding X, StringFormat=N2}" Grid.Row="1" Grid.Column="1" />
+    
+    <TextBlock TextAlignment="Center" Foreground="Gray" Grid.Column="2">Y</TextBlock>
+    <TextBlock TextAlignment="Center" Text="{Binding Y, StringFormat=N2}" Grid.Row="1" Grid.Column="2" />
+    
+    <TextBlock TextAlignment="Center" Foreground="Gray" Grid.Column="3">Z</TextBlock>
+    <TextBlock TextAlignment="Center" Text="{Binding Z, StringFormat=N2}" Grid.Row="1" Grid.Column="3" />
+
+  </Grid>
+</UserControl>
