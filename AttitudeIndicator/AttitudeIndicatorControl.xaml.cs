@@ -23,8 +23,7 @@ namespace AttitudeIndicator
         public AttitudeIndicatorControl()
         {
             InitializeComponent();
-
-
+            
         }
 
 
@@ -36,19 +35,46 @@ namespace AttitudeIndicator
         {
             base.OnRender(drawingContext);
 
-            this.HorizontCanvas.Children.Clear();
-
-            var col = Brushes.Black;
-            
-
-            var ln = new Line() { X1 = 10, X2 = 100, Y1 = 50, Y2 = 50, Fill=col};
-
-            this.HorizontCanvas.Children.Add(ln);
-
+            // dont konw..
 
         }
 
 
+
+
+        #region DependencyProperties
+
+
+
+
+
+        public static readonly DependencyProperty PitchProperty =
+        DependencyProperty.Register(nameof(Pitch),
+        typeof(double),
+        typeof(AttitudeIndicatorControl),
+        new FrameworkPropertyMetadata(0.0, new PropertyChangedCallback(PitchPropertyChanged)));
+
+
+        public double Pitch
+        {
+            get => (double)GetValue(PitchProperty);
+            set
+            {
+                SetValue(PitchProperty, value);
+            }
+        }
+
+        public static void PitchPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
+            var posSlid = d as AttitudeIndicatorControl;
+
+
+            
+
+        }
+
+        #endregion
 
 
 

@@ -7,7 +7,7 @@
         xmlns:h="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        Title="Attitude Indicator - Mechatronik Labor 2019" Height="550" Width="800">
+        Title="Attitude Indicator - Mechatronik Labor 2019" Height="550" Width="800" MinHeight="300" MinWidth="500">
     <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="300"/>
@@ -95,7 +95,7 @@
       
       </h:HelixViewport3D>
 
-    <local:AttitudeIndicatorControl Height="200" Width="200" VerticalAlignment="Top" Margin="20"/>
+    <!--<local:AttitudeIndicatorControl  VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="20" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"/>-->
 
 
     <StackPanel Grid.Column="2" >
@@ -129,8 +129,8 @@
          Value = "{Binding Theta}" />
       <Slider  DockPanel.Dock="Top" Name = "sliderPhi" 
          HorizontalAlignment="Stretch"
-         Maximum = "90" 
-               Minimum="-90"
+         Maximum = "180" 
+               Minimum="-180"
          Value = "{Binding Phi}" />
 
       <TextBlock Margin="0 10 0 0" FontSize="16" >Euler Angles</TextBlock>

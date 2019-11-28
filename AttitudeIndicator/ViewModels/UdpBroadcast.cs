@@ -19,7 +19,9 @@ namespace AttitudeIndicator.ViewModels
         }
 
 
-
+        /// <summary>
+        /// Property if the Broadcaster is running
+        /// </summary>
         private bool _broadcast;
         public bool Broadcast
         {
@@ -60,18 +62,19 @@ namespace AttitudeIndicator.ViewModels
 
         ushort getYaw()
         {
-            ushort ret = (ushort)((AppVM.Psi + 180) / 360 * ushort.MaxValue);
+            ushort ret = (ushort)((AppVM.Psi) / 360 * 65536);
+
             return ret;
         }
         ushort getPitch()
         {
-            ushort ret = (ushort)((AppVM.Theta + 90) / 180 * ushort.MaxValue);
+            ushort ret = (ushort)((AppVM.Theta) / 180 * 65536);
 
             return ret;
         }
         ushort getRoll()
         {
-            ushort ret = (ushort)((AppVM.Phi + 180) / 360 * ushort.MaxValue);
+            ushort ret = (ushort)((AppVM.Phi) / 360 * 65536);
             return ret;
         }
         
@@ -101,8 +104,8 @@ namespace AttitudeIndicator.ViewModels
 
             for(int i =0; i<source.Length; i++)
             {
-                target[writePos] = source[i];
-                writePos--;
+                target[i+offset] = source[i];
+                //writePos--;
             }
         }
 
@@ -118,8 +121,6 @@ namespace AttitudeIndicator.ViewModels
             IPEndPoint endPoint = new IPEndPoint(serverAddr, this.Port);
 
             byte[] data = new byte[20]; // todo
-
-            
 
             // HEAD 
 
@@ -171,12 +172,22 @@ namespace AttitudeIndicator.ViewModels
 
             try
             {
-                using (Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
+                //using (Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
+                //{
+                //    s.SendTo(messageframe, endPoint);
+
+                //}
+
+                using (var cl = new UdpClient(9101))
                 {
-                    s.SendTo(messageframe, endPoint);
+                    cl.Send(messageframe, messageframe.Length, endPoint);
+                    
                 }
-                
-            }catch(Exception e)
+
+
+
+            }
+            catch(Exception e)
             {
                 Console.WriteLine(e.Message);
             }
