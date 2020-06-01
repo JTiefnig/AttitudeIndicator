@@ -22,49 +22,61 @@
       
       <h:DefaultLights/>
 
-      
+      <ModelVisual3D >
+        <ModelVisual3D.Transform>
+          <Transform3DGroup>
+            
+          </Transform3DGroup>
+        </ModelVisual3D.Transform>
+
+        <!--<h:FileModelVisual3D x:Name="Plane" Source="../../Resouces/Blackbird.obj" >-->
+
+        <h:FileModelVisual3D x:Name="Plane" Source="C:/Users/johan/Desktop/spacex v37.obj" >
+          <h:FileModelVisual3D.DefaultMaterial>
+            <DiffuseMaterial>
+              <DiffuseMaterial.Brush>
+                <SolidColorBrush Color="Gray" Opacity="1"/>
+              </DiffuseMaterial.Brush>
+            </DiffuseMaterial>
+          </h:FileModelVisual3D.DefaultMaterial>
+          <h:FileModelVisual3D.Transform>
+            <Transform3DGroup>
+
+
+              <Transform3DGroup>
+                <ScaleTransform3D ScaleX="0.002" ScaleY="0.002" ScaleZ="0.002"/>
+                <RotateTransform3D>
+                  <RotateTransform3D.Rotation>
+                    <AxisAngleRotation3D Angle="-90" Axis="0,0,1" />
+                  </RotateTransform3D.Rotation>
+                </RotateTransform3D>
+                <RotateTransform3D>
+                  <RotateTransform3D.Rotation>
+                    <AxisAngleRotation3D Angle="90" Axis="0,1,0" />
+                  </RotateTransform3D.Rotation>
+                </RotateTransform3D>
+
+                <TranslateTransform3D OffsetX="-3" OffsetZ="1"/>
+              </Transform3DGroup>
+
+              <MatrixTransform3D x:Name="PlaneTranform" Matrix="{Binding AirPlaneMatrixTransform}"/>
+              <RotateTransform3D>
+                <RotateTransform3D.Rotation>
+                  <AxisAngleRotation3D Angle="180" Axis="1,0,0" />
+                </RotateTransform3D.Rotation>
+              </RotateTransform3D>
+
+            </Transform3DGroup>
+
+          </h:FileModelVisual3D.Transform>
+        </h:FileModelVisual3D>
+
+
+      </ModelVisual3D>
 
       <!--<h:CombinedManipulator/>-->
 
-      <h:FileModelVisual3D x:Name="Plane" Source="../../Resouces/Blackbird.obj" >
-        <h:FileModelVisual3D.DefaultMaterial>
-          <DiffuseMaterial>
-            <DiffuseMaterial.Brush>
-              <SolidColorBrush Color="Gray" Opacity="1"/>
-            </DiffuseMaterial.Brush>
-          </DiffuseMaterial>
-        </h:FileModelVisual3D.DefaultMaterial>
-        <h:FileModelVisual3D.Transform>
-          <Transform3DGroup>
-            
-            
-            <Transform3DGroup>
-              <ScaleTransform3D ScaleX="0.002" ScaleY="0.002" ScaleZ="0.002"/>
-              <RotateTransform3D>
-                <RotateTransform3D.Rotation>
-                  <AxisAngleRotation3D Angle="-90" Axis="0,0,1" />
-                </RotateTransform3D.Rotation>
-              </RotateTransform3D>
-              <RotateTransform3D>
-                <RotateTransform3D.Rotation>
-                  <AxisAngleRotation3D Angle="90" Axis="0,1,0" />
-                </RotateTransform3D.Rotation>
-              </RotateTransform3D>
-  
-              <TranslateTransform3D OffsetX="-3" OffsetZ="1"/>
-            </Transform3DGroup>
-
-            <MatrixTransform3D x:Name="PlaneTranform" Matrix="{Binding AirPlaneMatrixTransform}"/>
-            <RotateTransform3D>
-              <RotateTransform3D.Rotation>
-                <AxisAngleRotation3D Angle="180" Axis="1,0,0" />
-              </RotateTransform3D.Rotation>
-            </RotateTransform3D>
-            
-          </Transform3DGroup>
-          
-        </h:FileModelVisual3D.Transform>
-      </h:FileModelVisual3D>
+     
       
       <h:CoordinateSystemVisual3D ArrowLengths="2" >
         <h:CoordinateSystemVisual3D.Transform>

@@ -30,6 +30,8 @@ namespace AttitudeIndicator
             // Do Init here // Just because I m lazy
             DataContext = new ApplicationViewModel();
   
+
+            
         }
 
    
