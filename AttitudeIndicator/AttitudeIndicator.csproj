@@ -137,8 +137,14 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resouces\Blackbird.obj" />
-    <None Include="Resouces\Blackbird.stl" />
+    <None Include="Resources\Blackbird.obj" />
+    <None Include="Resources\Blackbird.stl" />
+    <Content Include="Resources\spacex v37.mtl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\spacex v37.obj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -10,12 +10,11 @@
         Title="Attitude Indicator - Mechatronik Labor 2019" Height="550" Width="800" MinHeight="300" MinWidth="500">
     <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="300"/>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="200"/>
     </Grid.ColumnDefinitions>
 
-    <h:HelixViewport3D Grid.ColumnSpan="3" ModelUpDirection="0 0 1" ViewCubeHorizontalPosition="Left" >
+    <h:HelixViewport3D Grid.ColumnSpan="2" ModelUpDirection="0 0 1" ViewCubeHorizontalPosition="Left" >
       <h:HelixViewport3D.DefaultCamera>
         <PerspectiveCamera Position="-14,10,10" LookDirection="14,-10,-10" UpDirection="0,0,1" />
       </h:HelixViewport3D.DefaultCamera>
@@ -30,8 +29,9 @@
         </ModelVisual3D.Transform>
 
         <!--<h:FileModelVisual3D x:Name="Plane" Source="../../Resouces/Blackbird.obj" >-->
-
-        <h:FileModelVisual3D x:Name="Plane" Source="C:/Users/johan/Desktop/spacex v37.obj" >
+        <!--<h:FileModelVisual3D x:Name="Plane" Source="pack://application:,,,/Resources/spacex v37.obj" >-->
+        <h:FileModelVisual3D x:Name="Plane" Source="Resources/spacex v37.obj" IsHitTestVisible="True">
+          
           <h:FileModelVisual3D.DefaultMaterial>
             <DiffuseMaterial>
               <DiffuseMaterial.Brush>
@@ -44,19 +44,14 @@
 
 
               <Transform3DGroup>
-                <ScaleTransform3D ScaleX="0.002" ScaleY="0.002" ScaleZ="0.002"/>
+                <ScaleTransform3D ScaleX="0.02" ScaleY="0.02" ScaleZ="0.02"/>
                 <RotateTransform3D>
                   <RotateTransform3D.Rotation>
                     <AxisAngleRotation3D Angle="-90" Axis="0,0,1" />
                   </RotateTransform3D.Rotation>
                 </RotateTransform3D>
-                <RotateTransform3D>
-                  <RotateTransform3D.Rotation>
-                    <AxisAngleRotation3D Angle="90" Axis="0,1,0" />
-                  </RotateTransform3D.Rotation>
-                </RotateTransform3D>
-
-                <TranslateTransform3D OffsetX="-3" OffsetZ="1"/>
+                
+          
               </Transform3DGroup>
 
               <MatrixTransform3D x:Name="PlaneTranform" Matrix="{Binding AirPlaneMatrixTransform}"/>
@@ -78,7 +73,7 @@
 
      
       
-      <h:CoordinateSystemVisual3D ArrowLengths="2" >
+      <!--<h:CoordinateSystemVisual3D ArrowLengths="2" >
         <h:CoordinateSystemVisual3D.Transform>
           <Transform3DGroup>
             <MatrixTransform3D Matrix="{Binding ElementName=PlaneTranform, Path=Matrix}"/>
@@ -90,7 +85,7 @@
             
           </Transform3DGroup>
         </h:CoordinateSystemVisual3D.Transform>
-      </h:CoordinateSystemVisual3D>
+      </h:CoordinateSystemVisual3D>-->
 
       <h:GridLinesVisual3D Width="10" Length="10" MinorDistance="1" MajorDistance="1" Thickness="0.01"/>
       <!--<h:CoordinateSystemVisual3D/>-->
@@ -110,7 +105,7 @@
     <!--<local:AttitudeIndicatorControl  VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="20" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"/>-->
 
 
-    <StackPanel Grid.Column="2" >
+    <StackPanel Grid.Column="1" >
 
       <Border Style="{StaticResource LightBorder}">
         <StackPanel>
@@ -126,24 +121,26 @@
           </StackPanel>
         </StackPanel>
       </Border>
-      
-      
-      
-      <Slider  Name = "slider" 
+
+      <Expander>
+        <StackPanel>
+          <Slider  Name = "slider" 
          HorizontalAlignment="Stretch"
          Maximum = "180" 
                Minimum="-180"
          Value = "{Binding Psi}" />
-      <Slider Margin="2" DockPanel.Dock="Top" Name = "sliderTheta" 
+          <Slider Margin="2" DockPanel.Dock="Top" Name = "sliderTheta" 
          HorizontalAlignment="Stretch"
          Maximum = "90" 
                Minimum="-90"
          Value = "{Binding Theta}" />
-      <Slider  DockPanel.Dock="Top" Name = "sliderPhi" 
+          <Slider  DockPanel.Dock="Top" Name = "sliderPhi" 
          HorizontalAlignment="Stretch"
          Maximum = "180" 
                Minimum="-180"
          Value = "{Binding Phi}" />
+        </StackPanel>
+      </Expander>
 
       <TextBlock Margin="0 10 0 0" FontSize="16" >Euler Angles</TextBlock>
       <local:EulerAnglesDisplay/>
@@ -157,8 +154,10 @@
           <TextBlock VerticalAlignment="Center" FontSize="20"> RESET </TextBlock>
         </StackPanel>
       </Button>-->
-
-      <local:UDPSettingsControl DataContext="{Binding Broadcaster}" Height="100"></local:UDPSettingsControl>
+      <Expander>
+        <local:UDPSettingsControl DataContext="{Binding Broadcaster}" Height="100"></local:UDPSettingsControl>
+      </Expander>
+      
     </StackPanel>
 
     
