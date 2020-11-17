@@ -7,7 +7,7 @@
         xmlns:h="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        Title="Attitude Indicator - Mechatronik Labor 2019" Height="550" Width="800" MinHeight="300" MinWidth="500">
+        Title="Attitude Indicator - MecatronicsLab 2019 - TU Graz" Height="550" Width="800" MinHeight="300" MinWidth="500">
     <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
