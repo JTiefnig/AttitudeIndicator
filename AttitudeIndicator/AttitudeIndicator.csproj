@@ -67,7 +67,9 @@
     <Compile Include="EulerAnglesDisplay.xaml.cs">
       <DependentUpon>EulerAnglesDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GimbalVisual3D.cs" />
     <Compile Include="HorizontCanvas.cs" />
+    <Compile Include="NocheRing.cs" />
     <Compile Include="PieSlice.cs" />
     <Compile Include="QuaternionDisplay.xaml.cs">
       <DependentUpon>QuaternionDisplay.xaml</DependentUpon>

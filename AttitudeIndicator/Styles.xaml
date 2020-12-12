@@ -52,7 +52,7 @@
 
   <Style TargetType="{x:Type Border}" x:Key="LightBorder">
     <Setter Property="BorderBrush" Value="LightGray"/>
-    <Setter Property="BorderThickness" Value="2"/>
+    <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="CornerRadius" Value="5"/>
     <Setter Property="Padding" Value="2"/>
   </Style>
@@ -81,9 +81,6 @@
 
           <Grid>
 
-
-           
-            
             <Border x:Name="border" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}"

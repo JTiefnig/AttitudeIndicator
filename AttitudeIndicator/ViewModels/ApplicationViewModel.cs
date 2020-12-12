@@ -17,19 +17,15 @@ namespace AttitudeIndicator.ViewModels
             SerialDataConnection = new SerialCommunicationViewModel(new SerialMessageProcessor(this));
 
             // for debugging
-            SerialDataConnection.SelectedPortName = "COM5";
-            SerialDataConnection.Connected = true;
-
+            SerialDataConnection.SelectedPortName = "COM4";
+            //SerialDataConnection.Connected = true;
 
             Broadcaster = new UdpBroadcast(this);
         }
 
 
-        
-
         void CalculateTransform()
         {
-
 
             var q = new Quaternion(new Vector3D(0, 0, 1), Psi);
             q *= new Quaternion(new Vector3D(0, 1, 0), Theta);
@@ -41,9 +37,6 @@ namespace AttitudeIndicator.ViewModels
             mat.Rotate(q);
             this.AirPlaneMatrixTransform = mat;
         }
-
-
-
 
 
         #region Properties
@@ -145,5 +138,20 @@ namespace AttitudeIndicator.ViewModels
 
         #endregion
 
+
+
+        public Point3DCollection Ring => CreatePath(0, Math.PI * 2, 100, u => Math.Cos(u)*5, u => Math.Sin(u)*5, (u)=>0);
+
+
+        private Point3DCollection CreatePath(double min, double max, int n, Func<double, double> fx, Func<double, double> fy, Func<double, double> fz)
+        {
+            var list = new Point3DCollection(n);
+            for (int i = 0; i < n; i++)
+            {
+                double u = min + (max - min) * i / n;
+                list.Add(new Point3D(fx(u), fy(u), fz(u)));
+            }
+            return list;
+        }
     }
 }

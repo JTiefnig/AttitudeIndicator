@@ -6,11 +6,12 @@
              xmlns:local="clr-namespace:AttitudeIndicator"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="200">
+             d:DesignHeight="130" d:DesignWidth="200">
   <Grid>
-    <Border Style="{StaticResource LightBorder}">
+    <Border Style="{StaticResource LightBorder}" Padding="5">
       <Grid>
         <Grid.RowDefinitions>
+          <RowDefinition Height="18"/>
           <RowDefinition Height="15"/>
           <RowDefinition Height="*"/>
           <RowDefinition Height="15"/>
@@ -20,11 +21,12 @@
           <ColumnDefinition Width="3*"/>
           <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock FontSize="8" DockPanel.Dock="Top">Endpoint IP: </TextBlock>
-        <TextBox Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Text="{Binding IP}"/>
-        <TextBlock FontSize="8" Grid.Row="2">Port:</TextBlock>
-        <TextBox Grid.Row="4" Text="{Binding Port}" > </TextBox>
-        <ToggleButton Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" Margin="5" IsChecked="{Binding Broadcast}">
+        <TextBlock Grid.Row="0" DockPanel.Dock="Top" Grid.ColumnSpan="2">UDP Broadcast</TextBlock>
+        <TextBlock FontSize="8" Grid.Row="1" DockPanel.Dock="Top">Endpoint IP: </TextBlock>
+        <TextBox Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Text="{Binding IP}"/>
+        <TextBlock FontSize="8" Grid.Row="3">Port:</TextBlock>
+        <TextBox Grid.Row="5" Text="{Binding Port}" > </TextBox>
+        <ToggleButton Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" Margin="5" IsChecked="{Binding Broadcast}">
           <fa:ImageAwesome Icon="Wifi"/>
         </ToggleButton>
       </Grid>

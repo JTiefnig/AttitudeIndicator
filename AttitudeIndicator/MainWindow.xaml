@@ -24,14 +24,14 @@
       <ModelVisual3D >
         <ModelVisual3D.Transform>
           <Transform3DGroup>
-            
+
           </Transform3DGroup>
         </ModelVisual3D.Transform>
 
         <!--<h:FileModelVisual3D x:Name="Plane" Source="../../Resouces/Blackbird.obj" >-->
         <!--<h:FileModelVisual3D x:Name="Plane" Source="pack://application:,,,/Resources/spacex v37.obj" >-->
         <h:FileModelVisual3D x:Name="Plane" Source="Resources/spacex v37.obj" IsHitTestVisible="True">
-          
+
           <h:FileModelVisual3D.DefaultMaterial>
             <DiffuseMaterial>
               <DiffuseMaterial.Brush>
@@ -50,114 +50,83 @@
                     <AxisAngleRotation3D Angle="-90" Axis="0,0,1" />
                   </RotateTransform3D.Rotation>
                 </RotateTransform3D>
-                
-          
-              </Transform3DGroup>
 
+              </Transform3DGroup>
               <MatrixTransform3D x:Name="PlaneTranform" Matrix="{Binding AirPlaneMatrixTransform}"/>
               <RotateTransform3D>
                 <RotateTransform3D.Rotation>
                   <AxisAngleRotation3D Angle="180" Axis="1,0,0" />
                 </RotateTransform3D.Rotation>
               </RotateTransform3D>
-
             </Transform3DGroup>
-
           </h:FileModelVisual3D.Transform>
         </h:FileModelVisual3D>
-
-
+        
       </ModelVisual3D>
 
-      <!--<h:CombinedManipulator/>-->
+      <!--<local:NocheRing RingDiameter="4" Diameter="0.2" ThetaDiv="20" IsPathClosed="True" Fill="Red"/>-->
 
-     
-      
-      <!--<h:CoordinateSystemVisual3D ArrowLengths="2" >
-        <h:CoordinateSystemVisual3D.Transform>
-          <Transform3DGroup>
-            <MatrixTransform3D Matrix="{Binding ElementName=PlaneTranform, Path=Matrix}"/>
-            <RotateTransform3D>
-              <RotateTransform3D.Rotation>
-                <AxisAngleRotation3D Angle="180" Axis="1,0,0" />
-              </RotateTransform3D.Rotation>
-            </RotateTransform3D>
-            
-          </Transform3DGroup>
-        </h:CoordinateSystemVisual3D.Transform>
-      </h:CoordinateSystemVisual3D>-->
+      <local:GimbalVisual3D Diameter="5.5"/>
 
       <h:GridLinesVisual3D Width="10" Length="10" MinorDistance="1" MajorDistance="1" Thickness="0.01"/>
-      <!--<h:CoordinateSystemVisual3D/>-->
       
-      
-      <!--<h:CoordinateSystemVisual3D >
-         <h:CoordinateSystemVisual3D.Transform>
-          <Transform3DGroup>
-            <TranslateTransform3D OffsetZ="2"/>
-          </Transform3DGroup>
-        </h:CoordinateSystemVisual3D.Transform>
-      </h:CoordinateSystemVisual3D>-->
-      
-      
-      </h:HelixViewport3D>
+    </h:HelixViewport3D>
 
-    <!--<local:AttitudeIndicatorControl  VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="20" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"/>-->
+      
+      
+      
+    <!--<local:AttitudeIndicatorControl VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="20" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"/>-->
 
 
+      
+     <!-- MENU Bar on the right screen side-->
     <StackPanel Grid.Column="1" >
 
-      <Border Style="{StaticResource LightBorder}">
+      <TextBlock Margin="0 10 0 0" FontSize="14" >Euler Angles</TextBlock>
+      <local:EulerAnglesDisplay/>
+      <TextBlock Margin="0 10 0 0" FontSize="14" >Unit Quaternion</TextBlock>
+      <local:QuaternionDisplay DataContext="{Binding Rotation}"/>
+      <!--Expander for the data link controls-->
+      <Expander Header="Data Link">
         <StackPanel>
-          <TextBlock>Serial Connection</TextBlock>
-          <StackPanel  Orientation="Horizontal" DataContext="{Binding SerialDataConnection}" >
-            <ComboBox Width="120" Margin="3" SelectedItem="{Binding SelectedPortName}" ItemsSource="{Binding PortList}">
-
-            </ComboBox>
-
-            <ToggleButton DockPanel.Dock="Top" Height="29" Padding="2" IsChecked="{Binding Connected}">
-              <fa:ImageAwesome Icon="LifeSaver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="{Binding Connected}" SpinDuration="4"/>
-            </ToggleButton>
-          </StackPanel>
+          <Border Style="{StaticResource LightBorder}" Margin="5">
+            <StackPanel>
+              <TextBlock>Hardware link</TextBlock>
+              <StackPanel  Orientation="Horizontal" DataContext="{Binding SerialDataConnection}" >
+                <ComboBox Width="120" Margin="3" SelectedItem="{Binding SelectedPortName}" ItemsSource="{Binding PortList}"/>
+                <ToggleButton DockPanel.Dock="Top" Height="29" Padding="2" IsChecked="{Binding Connected}">
+                  <fa:ImageAwesome Icon="CircleOutlineNotch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="{Binding Connected}" SpinDuration="4"/>
+                </ToggleButton>
+              </StackPanel>
+            </StackPanel>
+          </Border>
+          <local:UDPSettingsControl DataContext="{Binding Broadcaster}" Height="100" Margin="5"/>
         </StackPanel>
-      </Border>
+      </Expander>
 
-      <Expander>
-        <StackPanel>
-          <Slider  Name = "slider" 
+      <!--Expander for the manual Controls By sliders-->
+      <Expander Header="ManualInput">
+        <Border Style="{StaticResource LightBorder}">
+          <StackPanel>
+            <Slider  Name = "slider" 
          HorizontalAlignment="Stretch"
          Maximum = "180" 
                Minimum="-180"
          Value = "{Binding Psi}" />
-          <Slider Margin="2" DockPanel.Dock="Top" Name = "sliderTheta" 
+            <Slider Margin="2" DockPanel.Dock="Top" Name = "sliderTheta" 
          HorizontalAlignment="Stretch"
          Maximum = "90" 
                Minimum="-90"
          Value = "{Binding Theta}" />
-          <Slider  DockPanel.Dock="Top" Name = "sliderPhi" 
+            <Slider  DockPanel.Dock="Top" Name = "sliderPhi" 
          HorizontalAlignment="Stretch"
          Maximum = "180" 
                Minimum="-180"
          Value = "{Binding Phi}" />
-        </StackPanel>
+          </StackPanel>
+        </Border>
       </Expander>
 
-      <TextBlock Margin="0 10 0 0" FontSize="16" >Euler Angles</TextBlock>
-      <local:EulerAnglesDisplay/>
-      <TextBlock Margin="0 10 0 0" FontSize="16" >Rotation Quaternion</TextBlock>
-      <local:QuaternionDisplay DataContext="{Binding Rotation}"/>
-
-
-      <!--<Button >
-        <StackPanel Orientation="Horizontal" Height="20">
-          <fa:ImageAwesome Icon="AlignCenter"/>
-          <TextBlock VerticalAlignment="Center" FontSize="20"> RESET </TextBlock>
-        </StackPanel>
-      </Button>-->
-      <Expander>
-        <local:UDPSettingsControl DataContext="{Binding Broadcaster}" Height="100"></local:UDPSettingsControl>
-      </Expander>
-      
     </StackPanel>
 
     
