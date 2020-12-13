@@ -9,12 +9,12 @@ using HelixToolkit.Wpf;
 
 namespace AttitudeIndicator
 {
-    public class NocheRing : TubeVisual3D
+    public class NotchRing : TubeVisual3D
     {
         /// <summary>
         /// Contsructor
         /// </summary>
-        public NocheRing() {
+        public NotchRing() {
 
             this.Path = CreatePath();
 
@@ -26,7 +26,7 @@ namespace AttitudeIndicator
 
 
         public static readonly DependencyProperty RingDiameterProperty =
-            DependencyProperty.Register(nameof(RingDiameter), typeof(double), typeof(NocheRing),
+            DependencyProperty.Register(nameof(RingDiameter), typeof(double), typeof(NotchRing),
                                         new UIPropertyMetadata(3.0, PathChanged));
 
         public double RingDiameter
@@ -37,7 +37,7 @@ namespace AttitudeIndicator
 
         private static void PathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var ring = d as NocheRing;
+            var ring = d as NotchRing;
 
             ring.Path = ring.CreatePath();
             ring.OnGeometryChanged();
@@ -78,10 +78,12 @@ namespace AttitudeIndicator
             {
                 double u = min + (max - min) * i / n;
 
+
+                
                 var prop = Math.Abs(i - n / 2);
                 double widener = 1;
                 if (prop < 3)
-                    widener += 0.15* (3-prop)/3.0;
+                    widener += 0.1* (3-prop)/3.0;
 
 
 

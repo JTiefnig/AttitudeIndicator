@@ -14,9 +14,9 @@ namespace AttitudeIndicator
     class GimbalVisual3D: UIElement3D
     {
 
-        private readonly NocheRing AlphaRing = new NocheRing() { Fill = new SolidColorBrush(Colors.Purple), Diameter = 0.2 };
-        private readonly NocheRing BetaRing = new NocheRing() { Fill = new SolidColorBrush(Colors.Green), Diameter = 0.2 };
-        private readonly NocheRing GammaRing = new NocheRing() { Fill = new SolidColorBrush(Colors.Blue), Diameter = 0.2 };
+        private readonly NotchRing AlphaRing = new NotchRing() { Fill = new SolidColorBrush(Colors.Purple), Diameter = 0.2 };
+        private readonly NotchRing BetaRing = new NotchRing() { Fill = new SolidColorBrush(Colors.Green), Diameter = 0.2 };
+        private readonly NotchRing GammaRing = new NotchRing() { Fill = new SolidColorBrush(Colors.Blue), Diameter = 0.2 };
 
         public GimbalVisual3D()
         {
@@ -34,7 +34,7 @@ namespace AttitudeIndicator
 
         public static readonly DependencyProperty DiameterProperty =
             DependencyProperty.Register(nameof(Diameter), typeof(double), typeof(GimbalVisual3D),
-                                        new UIPropertyMetadata(6.0, DiameterChanged));
+                                        new UIPropertyMetadata(5.0, DiameterChanged));
 
         public double Diameter
         {
@@ -49,15 +49,59 @@ namespace AttitudeIndicator
             double dia = (double)e.NewValue;
 
             gimb.AlphaRing.RingDiameter = dia;
-            gimb.AlphaRing.RingDiameter = dia*0.95;
-            gimb.AlphaRing.RingDiameter = dia*0.9;
+            gimb.BetaRing.RingDiameter = dia*0.9;
+            gimb.GammaRing.RingDiameter = dia*0.8;
         }
 
 
 
+        /// <summary>
+        /// Calculating Euler angles
+        /// Reference: https://www.gregslabaugh.net/publications/euler.pdf
+        /// </summary>
+        /// <param name="mat"></param>
+        /// <returns></returns>
+        static Vector3D GetEulerangle(Matrix3D mat)
+        {
+            double psi = 0;
+            double theta = 0;
+            double phi = 0;
+
+            if(Math.Abs(mat.M31)!=0)
+            {
+                theta = -Math.Asin(mat.M31);
+                psi = Math.Atan2(mat.M32 / Math.Cos(theta), mat.M33 / Math.Cos(theta));
+                phi = Math.Atan2(mat.M21 / Math.Cos(theta), mat.M11 / Math.Cos(theta));
+            }
+            else
+            {
+                phi = 0;
+                if(mat.M31 == -1)
+                {
+                    theta = Math.PI / 2;
+                    psi = phi + Math.Atan2(mat.M12, mat.M13);
+                }else
+                {
+                    theta = -Math.PI / 2;
+                    psi = -phi + Math.Atan2(-mat.M12, -mat.M13);
+                }
+            }
+
+            return new Vector3D(psi, theta, phi);
+        }
+
+
         private void OrientationChanged()
         {
+            // NO thats not how it works...clarly
+            //double psi = Vector3D.AngleBetween(new Vector3D(1, 0, 0), Orientation.Transform(new Vector3D(1, 0, 0)));
+            //double theta = Vector3D.AngleBetween(new Vector3D(0, 1, 0), Orientation.Transform(new Vector3D(0, 1, 0)));
+            //double phi = Vector3D.AngleBetween(new Vector3D(0, 0, 1), Orientation.Transform(new Vector3D(0, 0, 1)));
+
+
             
+
+
         }
 
 

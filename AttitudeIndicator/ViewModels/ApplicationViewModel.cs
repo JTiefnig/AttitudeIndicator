@@ -33,6 +33,7 @@ namespace AttitudeIndicator.ViewModels
 
             this.Rotation = q;
 
+
             var mat = new Matrix3D();
             mat.Rotate(q);
             this.AirPlaneMatrixTransform = mat;
@@ -53,8 +54,6 @@ namespace AttitudeIndicator.ViewModels
         {
             get; set;
         }
-
-
 
 
         /// <summary>
