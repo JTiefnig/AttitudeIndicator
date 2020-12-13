@@ -1,0 +1,3 @@
+[submodule "MUC_INS"]
+    path = MUC_INS
+    url = https://github.com/JTiefnig/InertialNavigationSystem.git
