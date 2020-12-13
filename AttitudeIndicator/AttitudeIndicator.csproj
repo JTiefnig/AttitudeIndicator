@@ -74,6 +74,7 @@
     <Compile Include="QuaternionDisplay.xaml.cs">
       <DependentUpon>QuaternionDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TransformationHelper.cs" />
     <Compile Include="UDPSettingsControl.xaml.cs">
       <DependentUpon>UDPSettingsControl.xaml</DependentUpon>
     </Compile>
