@@ -64,10 +64,11 @@
         
       </ModelVisual3D>
 
-      <!--<local:NocheRing RingDiameter="4" Diameter="0.2" ThetaDiv="20" IsPathClosed="True" Fill="Red"/>-->
 
-      <local:GimbalVisual3D Diameter="5.5"/>
 
+      <local:GimbalVisual3D Diameter="4" Visibility="Visible" Orientation="{Binding AirPlaneMatrixTransform}" />
+
+      
       <h:GridLinesVisual3D Width="10" Length="10" MinorDistance="1" MajorDistance="1" Thickness="0.01"/>
       
     </h:HelixViewport3D>

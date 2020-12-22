@@ -11,20 +11,20 @@ using System.Windows.Media;
 
 namespace AttitudeIndicator
 {
-    class GimbalVisual3D: UIElement3D
+    class GimbalVisual3D : UIElement3D
     {
 
-        private readonly NotchRing AlphaRing = new NotchRing() { Fill = new SolidColorBrush(Colors.Purple), Diameter = 0.2 };
-        private readonly NotchRing BetaRing = new NotchRing() { Fill = new SolidColorBrush(Colors.Green), Diameter = 0.2 };
-        private readonly NotchRing GammaRing = new NotchRing() { Fill = new SolidColorBrush(Colors.Blue), Diameter = 0.2 };
+        private NotchRing PsiRing = new NotchRing() { Fill = new SolidColorBrush(Colors.Purple), Diameter = 0.2 };
+        private NotchRing ThetaRing = new NotchRing() { Fill = new SolidColorBrush(Colors.Green), Diameter = 0.2 };
+        private NotchRing PhiRing = new NotchRing() { Fill = new SolidColorBrush(Colors.Blue), Diameter = 0.2 };
 
         public GimbalVisual3D()
         {
             var group = new Model3DGroup();
-            group.Children.Add(AlphaRing.Model);
+            group.Children.Add(PsiRing.Model);
             //BetaRing.Model.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 90));
-            group.Children.Add(BetaRing.Model);
-            group.Children.Add(GammaRing.Model);
+            group.Children.Add(ThetaRing.Model);
+            group.Children.Add(PhiRing.Model);
             this.Visual3DModel = group;
         }
 
@@ -48,34 +48,68 @@ namespace AttitudeIndicator
 
             double dia = (double)e.NewValue;
 
-            gimb.AlphaRing.RingDiameter = dia;
-            gimb.BetaRing.RingDiameter = dia*0.9;
-            gimb.GammaRing.RingDiameter = dia*0.8;
+            gimb.PsiRing.RingDiameter = dia;
+            gimb.ThetaRing.RingDiameter = dia * 0.9;
+            gimb.PhiRing.RingDiameter = dia * 0.8;
         }
 
 
+
+
+        //private Transform3DGroup PhiRingTransform => { var ret = new Transform3DGroup(); return ret; }
 
         
 
 
         private void OrientationChanged()
         {
-            // NO thats not how it works...clarly
-            //double psi = Vector3D.AngleBetween(new Vector3D(1, 0, 0), Orientation.Transform(new Vector3D(1, 0, 0)));
-            //double theta = Vector3D.AngleBetween(new Vector3D(0, 1, 0), Orientation.Transform(new Vector3D(0, 1, 0)));
-            //double phi = Vector3D.AngleBetween(new Vector3D(0, 0, 1), Orientation.Transform(new Vector3D(0, 0, 1)));
+
+            var rotation = TransformationHelper.GetEulerangle(Orientation);
 
 
+            rotation *= 180 / Math.PI; // RAD to Degree converstion
+
+
+
+   
+            var tgPsiRing = new Transform3DGroup();
+            tgPsiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), rotation.X)));
+
+            this.PsiRing.Model.Transform = tgPsiRing;
+
+            var tgthetaRing = new Transform3DGroup();
+            tgthetaRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 90)));
+            tgthetaRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), rotation.X)));
+            tgthetaRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), rotation.Y)));
             
+            this.ThetaRing.Model.Transform = tgthetaRing;
 
+            var tgPhiRing = new Transform3DGroup();
+            tgPhiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), -90)));
+            tgPhiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), rotation.X)));
+            tgPhiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), rotation.Y)));
+            tgPhiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), rotation.Z)));
+
+            this.PhiRing.Model.Transform = tgPhiRing;
 
         }
 
 
-        public RotateTransform3D Orientation
+        public static readonly DependencyProperty OrientationProperty =
+            DependencyProperty.Register(nameof(Orientation), typeof(Matrix3D), typeof(GimbalVisual3D),
+                                        new UIPropertyMetadata(new Matrix3D(), (s, d) => (s as GimbalVisual3D).OrientationChanged()));
+
+
+        public Matrix3D Orientation
         {
-            get; set;
+            get => (Matrix3D)GetValue(OrientationProperty);
+            set { SetValue(OrientationProperty, value); }
         }
+
+        
+
+
+
 
         #endregion
 

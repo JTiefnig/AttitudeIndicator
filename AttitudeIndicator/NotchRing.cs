@@ -18,8 +18,6 @@ namespace AttitudeIndicator
 
             this.Path = CreatePath();
 
-           
-
         }
 
         #region Properties
@@ -40,30 +38,18 @@ namespace AttitudeIndicator
             var ring = d as NotchRing;
 
             ring.Path = ring.CreatePath();
-            ring.OnGeometryChanged();
+            //ring.OnGeometryChanged();
         }
 
         #endregion
 
 
-        
-
-        
 
 
-        protected override MeshGeometry3D Tessellate()
-        {
-
-
-            // sadly the base property Path is not virtual
-            
-
-
-            return base.Tessellate();
-            
-        }
-
-
+        /// <summary>
+        /// Creates the path for the ring geometry
+        /// </summary>
+        /// <returns></returns>
         private Point3DCollection CreatePath()
         {
 
@@ -71,7 +57,6 @@ namespace AttitudeIndicator
             double max = Math.PI * 2;
 
             int n = 125;
-
 
             var list = new Point3DCollection(n);
             for (int i = 0; i < n; i++)
@@ -87,8 +72,8 @@ namespace AttitudeIndicator
 
 
 
-                var x = Math.Sin(u) * RingDiameter*widener;
-                var y = Math.Cos(u) * RingDiameter*widener; 
+                var x = -Math.Cos(u) * RingDiameter*widener;
+                var y = -Math.Sin(u) * RingDiameter*widener; 
 
 
                 list.Add(new Point3D(x, y, 0));

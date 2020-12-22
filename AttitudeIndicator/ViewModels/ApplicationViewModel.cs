@@ -18,25 +18,47 @@ namespace AttitudeIndicator.ViewModels
 
             // for debugging
             SerialDataConnection.SelectedPortName = "COM4";
-            //SerialDataConnection.Connected = true;
+            SerialDataConnection.Connected = true;
 
             Broadcaster = new UdpBroadcast(this);
         }
+    
 
+
+        void RotationChanged()
+        {
+
+            var mat = new Matrix3D();
+            mat.Rotate(Rotation);
+            this.AirPlaneMatrixTransform = mat;
+
+
+            var euler = TransformationHelper.GetEulerangle(mat);
+
+
+            euler *= 180.0 / Math.PI;
+
+            this.Psi = euler.X;
+            this.Theta = euler.Y;
+            this.Phi = euler.Z;
+
+        }
 
         void CalculateTransform()
         {
 
-            var q = new Quaternion(new Vector3D(0, 0, 1), Psi);
-            q *= new Quaternion(new Vector3D(0, 1, 0), Theta);
-            q *= new Quaternion(new Vector3D(1, 0, 0), Phi);
+        
 
-            this.Rotation = q;
+            //var q = new Quaternion(new Vector3D(0, 0, 1), Psi);
+            //q *= new Quaternion(new Vector3D(0, 1, 0), Theta);
+            //q *= new Quaternion(new Vector3D(1, 0, 0), Phi);
+
+            //this.Rotation = q;
 
 
-            var mat = new Matrix3D();
-            mat.Rotate(q);
-            this.AirPlaneMatrixTransform = mat;
+            //var mat = new Matrix3D();
+            //mat.Rotate(q);
+            //this.AirPlaneMatrixTransform = mat;
         }
 
 
@@ -63,10 +85,11 @@ namespace AttitudeIndicator.ViewModels
         public Quaternion Rotation
         {
             get => _rotation;
-            private set
+            set
             {
                 _rotation = value;
                 OnPropertyChanged(nameof(Rotation));
+                RotationChanged();
             }
         }
 
