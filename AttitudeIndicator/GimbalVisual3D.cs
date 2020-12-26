@@ -22,10 +22,10 @@ namespace AttitudeIndicator
         {
             var group = new Model3DGroup();
             group.Children.Add(PsiRing.Model);
-            //BetaRing.Model.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 90));
             group.Children.Add(ThetaRing.Model);
             group.Children.Add(PhiRing.Model);
             this.Visual3DModel = group;
+            OrientationChanged();
         }
 
 
@@ -42,6 +42,11 @@ namespace AttitudeIndicator
             set { SetValue(DiameterProperty, value); }
         }
 
+        /// <summary>
+        /// If the size of the Gimbal is changed, the rings must be resized as well
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
         private static void DiameterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var gimb = d as GimbalVisual3D;
@@ -52,62 +57,56 @@ namespace AttitudeIndicator
             gimb.ThetaRing.RingDiameter = dia * 0.9;
             gimb.PhiRing.RingDiameter = dia * 0.8;
         }
+  
 
-
-
-
-        //private Transform3DGroup PhiRingTransform => { var ret = new Transform3DGroup(); return ret; }
-
-        
-
-
+        /// <summary>
+        /// Transform individual rings accordingly
+        /// </summary>
         private void OrientationChanged()
         {
 
-            var rotation = TransformationHelper.GetEulerangle(Orientation);
+            var rotation = TransformationHelper.QuaternionToEuler(Orientation);
 
 
             rotation *= 180 / Math.PI; // RAD to Degree converstion
 
-
-
-   
+            var q = new Quaternion(new Vector3D(0, 0, -1), rotation.Z);
             var tgPsiRing = new Transform3DGroup();
-            tgPsiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), rotation.X)));
-
+            tgPsiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(q.Axis, q.Angle)));
             this.PsiRing.Model.Transform = tgPsiRing;
+            
+            
+
 
             var tgthetaRing = new Transform3DGroup();
+            q *= new Quaternion(new Vector3D(0, -1, 0), rotation.Y);
             tgthetaRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 90)));
-            tgthetaRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), rotation.X)));
-            tgthetaRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), rotation.Y)));
+            tgthetaRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(q.Axis, q.Angle)));
+           
             
             this.ThetaRing.Model.Transform = tgthetaRing;
-
+            q *= new Quaternion(new Vector3D(1, 0, 0), rotation.X);
             var tgPhiRing = new Transform3DGroup();
             tgPhiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), -90)));
-            tgPhiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), rotation.X)));
-            tgPhiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), rotation.Y)));
-            tgPhiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), rotation.Z)));
-
+            tgPhiRing.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(q.Axis, q.Angle)));
             this.PhiRing.Model.Transform = tgPhiRing;
 
         }
 
 
         public static readonly DependencyProperty OrientationProperty =
-            DependencyProperty.Register(nameof(Orientation), typeof(Matrix3D), typeof(GimbalVisual3D),
-                                        new UIPropertyMetadata(new Matrix3D(), (s, d) => (s as GimbalVisual3D).OrientationChanged()));
+            DependencyProperty.Register(nameof(Orientation), typeof(Quaternion), typeof(GimbalVisual3D),
+                                        new UIPropertyMetadata(new Quaternion(), (s, d) => (s as GimbalVisual3D).OrientationChanged()));
 
 
-        public Matrix3D Orientation
+        /// <summary>
+        /// Property for the current flight orientation
+        /// </summary>
+        public Quaternion Orientation
         {
-            get => (Matrix3D)GetValue(OrientationProperty);
+            get => (Quaternion)GetValue(OrientationProperty);
             set { SetValue(OrientationProperty, value); }
         }
-
-        
-
 
 
 

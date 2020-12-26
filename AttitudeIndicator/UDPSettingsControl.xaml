@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:AttitudeIndicator"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
-             d:DesignHeight="130" d:DesignWidth="200">
+             d:DesignHeight="150" d:DesignWidth="200">
   <Grid>
     <Border Style="{StaticResource LightBorder}" Padding="5">
       <Grid>
@@ -25,7 +25,7 @@
         <TextBlock FontSize="8" Grid.Row="1" DockPanel.Dock="Top">Endpoint IP: </TextBlock>
         <TextBox Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Text="{Binding IP}"/>
         <TextBlock FontSize="8" Grid.Row="3">Port:</TextBlock>
-        <TextBox Grid.Row="5" Text="{Binding Port}" > </TextBox>
+        <TextBox Grid.Row="5" Text="{Binding Port}"> </TextBox>
         <ToggleButton Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" Margin="5" IsChecked="{Binding Broadcast}">
           <fa:ImageAwesome Icon="Wifi"/>
         </ToggleButton>

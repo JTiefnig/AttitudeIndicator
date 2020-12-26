@@ -8,13 +8,16 @@
         mc:Ignorable="d"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         Title="Attitude Indicator - MecatronicsLab 2019 - TU Graz" Height="550" Width="800" MinHeight="300" MinWidth="500">
-    <Grid>
+  <Window.Resources>
+    <local:BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+  </Window.Resources>
+  <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="200"/>
     </Grid.ColumnDefinitions>
 
-    <h:HelixViewport3D Grid.ColumnSpan="2" ModelUpDirection="0 0 1" ViewCubeHorizontalPosition="Left" >
+    <h:HelixViewport3D Grid.ColumnSpan="2" ModelUpDirection="0 0 1" ViewCubeHorizontalPosition="Left"  ViewCubeVerticalPosition="Top" Background="{DynamicResource ThemeBackGround}">
       <h:HelixViewport3D.DefaultCamera>
         <PerspectiveCamera Position="-14,10,10" LookDirection="14,-10,-10" UpDirection="0,0,1" />
       </h:HelixViewport3D.DefaultCamera>
@@ -66,7 +69,7 @@
 
 
 
-      <local:GimbalVisual3D Diameter="4" Visibility="Visible" Orientation="{Binding AirPlaneMatrixTransform}" />
+      <local:GimbalVisual3D Diameter="4"  Orientation="{Binding Rotation}" Visibility="{Binding ElementName=GimbalVisibilityButton, Path=IsChecked, Converter={StaticResource BoolToVisibility}}"/>
 
       
       <h:GridLinesVisual3D Width="10" Length="10" MinorDistance="1" MajorDistance="1" Thickness="0.01"/>
@@ -81,14 +84,29 @@
 
       
      <!-- MENU Bar on the right screen side-->
-    <StackPanel Grid.Column="1" >
-
-      <TextBlock Margin="0 10 0 0" FontSize="14" >Euler Angles</TextBlock>
-      <local:EulerAnglesDisplay/>
-      <TextBlock Margin="0 10 0 0" FontSize="14" >Unit Quaternion</TextBlock>
-      <local:QuaternionDisplay DataContext="{Binding Rotation}"/>
+    <StackPanel Grid.Column="1">
+      <DockPanel LastChildFill="False">
+        <ToggleButton x:Name="GimbalVisibilityButton" DockPanel.Dock="Right" Margin="2">
+          <ToggleButton.ToolTip>
+            <TextBlock>Show Gimbal Rings</TextBlock>
+          </ToggleButton.ToolTip>
+          <fa:ImageAwesome Icon="Compass" Height="20"/>
+        </ToggleButton>
+        <ToggleButton x:Name="DarkModeButton" DockPanel.Dock="Right" Margin="2" Click="DarkModeButton_Click">
+          <ToggleButton.ToolTip>
+            <TextBlock>NightMode</TextBlock>
+          </ToggleButton.ToolTip>
+          <fa:ImageAwesome Icon="MoonOutline" Height="20"/>
+        </ToggleButton>
+      </DockPanel>
+        
+      
+      <TextBlock Margin="0 10 0 0" FontSize="14" Foreground="{DynamicResource ThemeForeground}">Euler Angles</TextBlock>
+      <local:EulerAnglesDisplay Foreground="{DynamicResource ThemeForeground}"/>
+      <TextBlock Margin="0 10 0 0" FontSize="14" Foreground="{DynamicResource ThemeForeground}">Unit Quaternion</TextBlock>
+      <local:QuaternionDisplay DataContext="{Binding Rotation}" Foreground="{DynamicResource ThemeForeground}"/>
       <!--Expander for the data link controls-->
-      <Expander Header="Data Link">
+      <Expander Header="Data Link" Foreground="{DynamicResource ThemeForeground}">
         <StackPanel>
           <Border Style="{StaticResource LightBorder}" Margin="5">
             <StackPanel>
@@ -106,7 +124,7 @@
       </Expander>
 
       <!--Expander for the manual Controls By sliders-->
-      <Expander Header="ManualInput">
+      <Expander Header="Manual Input" Foreground="{DynamicResource ThemeForeground}">
         <Border Style="{StaticResource LightBorder}">
           <StackPanel>
             <Slider  Name = "slider" 

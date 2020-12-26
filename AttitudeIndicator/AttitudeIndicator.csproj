@@ -78,6 +78,7 @@
     <Compile Include="UDPSettingsControl.xaml.cs">
       <DependentUpon>UDPSettingsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValueConverter.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />

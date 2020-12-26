@@ -36,6 +36,8 @@ namespace AttitudeIndicator.ViewModels
             {
                 Port = new SerialPort(SelectedPortName, Baud);
                 Port.Open();
+                Port.DiscardInBuffer();
+
                 Port.DataReceived += DataHandler;
 
                 Port.ReadTimeout = 500;

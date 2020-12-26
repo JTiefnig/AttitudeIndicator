@@ -8,12 +8,27 @@ using System.Windows.Media.Media3D;
 namespace AttitudeIndicator
 {
 
+    public struct EulerAngles
+    {
+        public EulerAngles(double Psi, double Theta, double Phi)
+        {
+            psi = Psi;
+            theta = Theta;
+            phi = Phi;
+        }
+
+            double psi;
+        double theta;
+        double phi;
+    }
+
+
 
     public static class TransformationHelper
     {
 
         /// <summary>
-        /// Calculating Euler angles
+        /// Calculating the Euler Angles form a Rotation Matrix - Has a bug!! will work on that
         /// Reference: https://www.gregslabaugh.net/publications/euler.pdf
         /// </summary>
         /// <param name="mat"></param>
@@ -24,31 +39,39 @@ namespace AttitudeIndicator
             double theta = 0;
             double phi = 0;
 
-            if (Math.Abs(mat.M31) != 0)
+            // does not work as expected!!! 
+
+            if(mat.M31 < 1)
             {
-                theta = -Math.Asin(mat.M31);
-                psi = Math.Atan2(mat.M32 / Math.Cos(theta), mat.M33 / Math.Cos(theta));
-                phi = Math.Atan2(mat.M21 / Math.Cos(theta), mat.M11 / Math.Cos(theta));
-            }
-            else
-            {
-                phi = 0;
-                if (mat.M31 == -1)
+                if(mat.M31 > -1)
                 {
-                    theta = Math.PI / 2;
-                    psi = phi + Math.Atan2(mat.M12, mat.M13);
+                    theta = Math.Asin( -mat.M31);
+                    psi = Math.Atan2(mat.M21, mat.M11);
+                    phi = Math.Atan2(mat.M32, mat.M33);
                 }
                 else
                 {
-                    theta = -Math.PI / 2;
-                    psi = -phi + Math.Atan2(-mat.M12, -mat.M13);
+ 
+                    theta = Math.PI / 2;
+                    psi = -Math.Atan2((-1)*mat.M23, mat.M22);
+                    phi = 0;
                 }
             }
+            else
+            {
+                theta = -Math.PI / 2;
+                psi = Math.Atan2(-mat.M23, mat.M22);
+                phi = 0;
+            }
 
             return new Vector3D(phi, theta, psi);
         }
 
-
+        /// <summary>
+        /// Calculating Euler Angles form Quaternion... 
+        /// </summary>
+        /// <param name="q"></param>
+        /// <returns></returns>
         public static Vector3D QuaternionToEuler(Quaternion q)
         {
 
@@ -57,7 +80,7 @@ namespace AttitudeIndicator
             // roll (x-axis rotation)
             double sinr_cosp = 2 * (q.W * q.X + q.Y * q.Z);
             double cosr_cosp = 1 - 2 * (q.X * q.X + q.Y * q.Y);
-            angles.Y = Math.Atan2(sinr_cosp, cosr_cosp);
+            angles.X = Math.Atan2(sinr_cosp, cosr_cosp);
 
             // pitch (y-axis rotation)
             double sinp = 2 * (q.W * q.Y - q.Z * q.X);
@@ -69,7 +92,7 @@ namespace AttitudeIndicator
             // yaw (z-axis rotation)
             double siny_cosp = 2 * (q.W * q.Z + q.X * q.Y);
             double cosy_cosp = 1 - 2 * (q.Y * q.Y + q.Z * q.Z);
-            angles.X = Math.Atan2(siny_cosp, cosy_cosp);
+            angles.Z = Math.Atan2(siny_cosp, cosy_cosp);
 
 
             return angles;

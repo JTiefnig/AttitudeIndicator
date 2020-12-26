@@ -25,40 +25,72 @@ namespace AttitudeIndicator.ViewModels
     
 
 
-        void RotationChanged()
+        /// <summary>
+        /// Defining diffrent Conversion directions
+        /// This is needed to keep the system conistend and avoid stack overflow 
+        /// otherwise ther would be a pingpong situation between property changed events
+        /// </summary>
+        private enum TransformDirection
         {
+            None,
+            QuaternionToEuler,
+            EulerToQuaternion
+        }
+        private TransformDirection ProcessDirection = TransformDirection.None;
+
+
+
+        /// <summary>
+        /// Conversion of Quaternion to Euler angles
+        /// </summary>
+        void RotationToEulerAngles()
+        {
+            if (this.ProcessDirection != TransformDirection.None)
+                return;
+
+            this.ProcessDirection = TransformDirection.QuaternionToEuler;
 
             var mat = new Matrix3D();
             mat.Rotate(Rotation);
             this.AirPlaneMatrixTransform = mat;
 
 
-            var euler = TransformationHelper.GetEulerangle(mat);
-
+            var euler = TransformationHelper.QuaternionToEuler(Rotation);
 
             euler *= 180.0 / Math.PI;
 
-            this.Psi = euler.X;
+            this.Psi = euler.Z;
             this.Theta = euler.Y;
-            this.Phi = euler.Z;
+            this.Phi = euler.X;
+
+            this.ProcessDirection = TransformDirection.None;
 
         }
 
-        void CalculateTransform()
+
+        /// <summary>
+        /// Conversion of Euler angles to quaternion
+        /// </summary>
+        void EulerAnglesToRotation()
         {
 
-        
+            if (this.ProcessDirection != TransformDirection.None)
+                return;
 
-            //var q = new Quaternion(new Vector3D(0, 0, 1), Psi);
-            //q *= new Quaternion(new Vector3D(0, 1, 0), Theta);
-            //q *= new Quaternion(new Vector3D(1, 0, 0), Phi);
+            this.ProcessDirection = TransformDirection.EulerToQuaternion;
 
-            //this.Rotation = q;
+            var q = new Quaternion(new Vector3D(0, 0, 1), Psi);
+            q *= new Quaternion(new Vector3D(0, 1, 0), Theta);
+            q *= new Quaternion(new Vector3D(1, 0, 0), Phi);
+
+            this.Rotation = q;
+            var mat = new Matrix3D();
+            mat.Rotate(q);
+            this.AirPlaneMatrixTransform = mat;
+
+            this.ProcessDirection = TransformDirection.None;
 
 
-            //var mat = new Matrix3D();
-            //mat.Rotate(q);
-            //this.AirPlaneMatrixTransform = mat;
         }
 
 
@@ -89,7 +121,7 @@ namespace AttitudeIndicator.ViewModels
             {
                 _rotation = value;
                 OnPropertyChanged(nameof(Rotation));
-                RotationChanged();
+                RotationToEulerAngles();
             }
         }
 
@@ -105,7 +137,7 @@ namespace AttitudeIndicator.ViewModels
             {
                 _psi = value;
                 OnPropertyChanged(nameof(Psi));
-                CalculateTransform();
+                EulerAnglesToRotation();
             }
         }
 
@@ -121,7 +153,7 @@ namespace AttitudeIndicator.ViewModels
             {
                 _theta = value;
                 OnPropertyChanged(nameof(Theta));
-                CalculateTransform();
+                EulerAnglesToRotation();
             }
 
         }
@@ -137,7 +169,7 @@ namespace AttitudeIndicator.ViewModels
             {
                 _phi = value;
                 OnPropertyChanged(nameof(Phi));
-                CalculateTransform();
+                EulerAnglesToRotation();
             }
         }
 

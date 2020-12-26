@@ -16,6 +16,7 @@ using System.Windows.Media.Media3D;
 using System.ComponentModel;
 using HelixToolkit.Wpf;
 using AttitudeIndicator.ViewModels;
+using System.Windows.Controls.Primitives;
 
 namespace AttitudeIndicator
 {
@@ -29,14 +30,27 @@ namespace AttitudeIndicator
             InitializeComponent();
             // Do Init here // Just because I m lazy
             DataContext = new ApplicationViewModel();
-  
 
+            
             
         }
 
-   
+        private void DarkModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var toggle = sender as ToggleButton;
+
+            if(toggle.IsChecked == true)
+            {
+                this.Resources["ThemeBackGround"] = new SolidColorBrush(Colors.Black);
+                this.Resources["ThemeForeground"] = new SolidColorBrush(Colors.White);
+            }
+            else
+            {
+                this.Resources["ThemeBackGround"] = new SolidColorBrush(Colors.White);
+                this.Resources["ThemeForeground"] = new SolidColorBrush(Colors.Black);
+            }
 
 
-
+        }
     }
 }
