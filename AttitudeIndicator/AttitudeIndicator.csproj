@@ -74,6 +74,9 @@
     <Compile Include="QuaternionDisplay.xaml.cs">
       <DependentUpon>QuaternionDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TouchJoyStick.xaml.cs">
+      <DependentUpon>TouchJoyStick.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TransformationHelper.cs" />
     <Compile Include="UDPSettingsControl.xaml.cs">
       <DependentUpon>UDPSettingsControl.xaml</DependentUpon>
@@ -82,6 +85,7 @@
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="ViewModels\Rotator.cs" />
     <Compile Include="ViewModels\SerialCommunicationViewModel.cs" />
     <Compile Include="ViewModels\SerialMessageProcessor.cs" />
     <Compile Include="ViewModels\UdpBroadcast.cs" />
@@ -110,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TouchJoyStick.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

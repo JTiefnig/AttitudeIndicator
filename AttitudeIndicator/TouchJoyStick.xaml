@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="AttitudeIndicator.TouchJoyStick"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AttitudeIndicator"
+             MinHeight="320"
+             MinWidth="320"
+             mc:Ignorable="d">
+  <Grid Background="Transparent">
+    <Grid.Resources>
+      <GridLength x:Key="BoundingSize">60</GridLength>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="{Binding Source={StaticResource BoundingSize}}" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="{Binding Source={StaticResource BoundingSize}}" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="{Binding Source={StaticResource BoundingSize}}" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="{Binding Source={StaticResource BoundingSize}}" />
+    </Grid.ColumnDefinitions>
+
+    <Border
+      x:Name="BasicRect"
+      Grid.Row="1"
+      Grid.Column="1"
+      CornerRadius="25"
+      
+      BorderBrush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=UserControl}}"
+      
+      BorderThickness="3" />
+
+    <Border
+      x:Name="Slider"
+      Grid.Row="1"
+      Grid.Column="1"
+      Width="80"
+      Height="80"
+      Margin="4"
+      Background="LightGray"
+      BorderBrush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=UserControl}}"
+      BorderThickness="2"
+      CornerRadius="25"
+      >
+      
+      <!--CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">-->
+      
+      <Grid>
+        <!--  Hier könne ein pfeil sein  -->
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>
