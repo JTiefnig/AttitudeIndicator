@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 namespace AttitudeIndicator.ViewModels
 {
-    public class ApplicationViewModel: BaseViewModel
+    public class ApplicationViewModel : BaseViewModel
     {
 
         public ApplicationViewModel()
@@ -17,12 +17,12 @@ namespace AttitudeIndicator.ViewModels
             SerialDataConnection = new SerialCommunicationViewModel(new SerialMessageProcessor(this));
 
             // for debugging
-            SerialDataConnection.SelectedPortName = "COM4";
+            //SerialDataConnection.SelectedPortName = "COM4";
             //SerialDataConnection.Connected = true;
 
             Broadcaster = new UdpBroadcast(this);
         }
-    
+
 
 
         /// <summary>
@@ -191,11 +191,28 @@ namespace AttitudeIndicator.ViewModels
         }
 
 
+        public static List<InputMode> ModeList { get; } = new List<InputMode>()
+        {
+            new InputMode(){Name = "Hardware Input"},
+            new InputMode(){Name = "Manual Input"}
+        };
+            
+
+
+        public System.Windows.Visibility JoyStickVisibility { get; set; } = System.Windows.Visibility.Collapsed;
+
+
 
         public Rotator Rotator => new Rotator(this);
 
         #endregion
 
 
+    }
+
+    public class InputMode
+    {
+        public String Name { get; set; }
+        // todo
     }
 }

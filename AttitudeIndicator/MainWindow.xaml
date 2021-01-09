@@ -95,7 +95,15 @@
           </ToggleButton.ToolTip>
           <fa:ImageAwesome Icon="MoonOutline" Height="20"/>
         </ToggleButton>
-        
+        <ComboBox Width="120" Margin="3" DockPanel.Dock="Left"
+                  SelectedItem="{Binding SelectedMode}" 
+                  ItemsSource="{Binding ModeList}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Name}"/>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
       </DockPanel>
 
 
@@ -152,9 +160,11 @@
      <local:TouchJoyStick DockPanel.Dock="Left" 
                           HorizontalAlignment="Left" 
                           VerticalAlignment="Bottom" 
+                          Visibility="{Binding JoyStickVisibility}"
                           Foreground="{DynamicResource ThemeForeground}"
-                          CommandX="{Binding Rotator.JogX}"
-                          CommandY="{Binding Rotator.JogY}"/>
+                          Command="{Binding Rotator}"
+                          Margin="-40"
+                          />
     
   </Grid>
 </Window>
