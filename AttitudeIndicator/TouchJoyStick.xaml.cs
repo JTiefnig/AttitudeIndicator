@@ -35,28 +35,54 @@ namespace AttitudeIndicator
 
             XYBasicRect.Background= NormalBackgroundBrush;
 
-            this.XYSlider.TouchDown += new EventHandler<TouchEventArgs>(TouchableThing_TouchDown);
+            this.XYSlider.TouchDown += new EventHandler<TouchEventArgs>((s, e)=> 
+            {
+                this.DragState = InputState.DragXY;
+                CalcXYDeflection(e.GetTouchPoint(XYBasicRect).Position);
+            });
 
-            this.XYSlider.MouseDown += ( s,  e) => { mousedodou };
+            this.XYSlider.MouseDown += (s, e) =>
+            {
+                this.DragState = InputState.DragXY;
+                CalcXYDeflection(e.GetPosition(XYBasicRect));
+            };
 
-            this.XYBasicRect.MouseDown += SliderMouseDown;
+            this.XYBasicRect.MouseDown += (s, e) => 
+            {
+                this.DragState = InputState.DragXY;
+                CalcXYDeflection(e.GetPosition(XYBasicRect));
+            };
 
             // For Z Slider:
 
             ZBasicRect.Background = NormalBackgroundBrush;
 
-            this.ZSlider.TouchDown += new EventHandler<TouchEventArgs>(TouchableThing_TouchDown);
-            this.ZSlider.MouseDown += SliderMouseDown;
-            this.ZBasicRect.MouseDown += SliderMouseDown;
+            this.ZSlider.TouchDown += new EventHandler<TouchEventArgs>((s, e)=> 
+            {
+                this.DragState = InputState.DragZ;
+                CalcZDeflection(e.GetTouchPoint(ZBasicRect).Position);
+            });
+
+
+            this.ZSlider.MouseDown += (s, e) =>
+            {
+                this.DragState = InputState.DragZ;
+                CalcZDeflection(e.GetPosition(ZBasicRect));
+            }; 
+            this.ZBasicRect.MouseDown += (s,e)=>
+            {
+                this.DragState = InputState.DragZ;
+                CalcZDeflection(e.GetPosition(ZBasicRect));
+            };
 
 
 
             //Both 
-            this.MouseMove += SliderMouseMove;
-            this.MouseLeave += SliderMouseLeave;
-            this.MouseUp += SliderMouseLeave;
+            this.MouseMove += MouseMoveHandler;
+            this.MouseLeave += (s, e)=> this.DragState = InputState.None;
+            this.MouseUp += (s, e) => this.DragState = InputState.None;
             this.TouchMove += new EventHandler<TouchEventArgs>(TouchableThing_TouchMove);
-            this.TouchLeave += new EventHandler<TouchEventArgs>(TouchableThing_TouchLeave);
+            this.TouchLeave += new EventHandler<TouchEventArgs>((s, e) => this.DragState = InputState.None);
 
 
         }
@@ -117,76 +143,65 @@ namespace AttitudeIndicator
 
                 StartAnimation(_dragstate, value);
 
+                if(_dragstate == InputState.DragXY)
+                {
+                    XDeflection = 0;
+                    YDeflection = 0;
+                }else if(_dragstate == InputState.DragZ )
+                {
+                    ZDeflection = 0;
+                }
                 _dragstate = value;
 
+            }
+        }
+        
+
+        private void MouseMoveHandler(object sender, MouseEventArgs e)
+        {
+            if (this.DragState == InputState.DragXY)
+            {
+                CalcXYDeflection((e as MouseEventArgs).GetPosition(this.XYBasicRect));
+            }
+            else if (DragState == InputState.DragZ)
+            {
+                CalcZDeflection((e as MouseEventArgs).GetPosition(this.ZBasicRect));
+            }
+        }
+
+        
+
+        private void TouchableThing_TouchMove(object sender, TouchEventArgs e)
+        {
+            if(this.DragState == InputState.DragXY)
+            {
+                CalcXYDeflection((e as TouchEventArgs).GetTouchPoint(this.XYBasicRect).Position);
+            }
+            else if(DragState == InputState.DragZ)
+            {
+                CalcZDeflection((e as TouchEventArgs).GetTouchPoint(this.ZBasicRect).Position);
             }
         }
 
 
 
-
-        private void TouchableThing_TouchDown(object sender, TouchEventArgs e)
+        private void CalcXYDeflection(Point p)
         {
+            var maxmoveX = this.XYBasicRect.ActualWidth - this.XYSlider.ActualWidth;
+            var maxmoveY = this.XYBasicRect.ActualHeight - this.XYSlider.ActualHeight;
+            XDeflection = (((p.X - this.XYSlider.ActualWidth / 2) / maxmoveX * 2d - 1d));
+            YDeflection = (((p.Y - this.XYSlider.ActualHeight / 2) / maxmoveY * 2d - 1d));
 
         }
 
 
-        private void SliderMouseDown(object sender, MouseEventArgs e)
-        {
-
-            var obj = (sender as Control);
-
-
-            var myPoint = (e as MouseEventArgs).GetPosition(this.XYBasicRect);
-
-            CalcDeflectionFromPoint(myPoint);
-
-        }
-
-        private void SliderMouseMove(object sender, MouseEventArgs e)
-        {
-            if()
-                return;
-
-            var myPoint = (e as MouseEventArgs).GetPosition(this.BasicRect);
-
-            CalcDeflectionFromPoint(myPoint);
-
-        }
-
-        private void SliderMouseLeave(object sender, MouseEventArgs e)
-        {
-            isDragging = false;
-        }
-
-        private void TouchableThing_TouchMove(object sender, TouchEventArgs e)
-        {
-            if (!isDragging)
-                return;
-
-            var myPoint = (e as TouchEventArgs).GetTouchPoint(this.BasicRect).Position;
-            CalcDeflectionFromPoint(myPoint);
-
+        private void CalcZDeflection(Point p)
+        { 
+            var maxmoveZ = this.ZBasicRect.ActualHeight - this.ZSlider.ActualHeight;
+            ZDeflection = (((p.Y - this.ZSlider.ActualHeight / 2) / maxmoveZ * 2d - 1d));
         }
 
 
-
-        private void CalcDeflectionFromPoint(Point p)
-        {
-            var maxmoveX = this.BasicRect.ActualWidth - this.Slider.ActualWidth;
-            var maxmoveY = this.BasicRect.ActualHeight - this.Slider.ActualHeight;
-
-
-            XDeflection = (((p.X - this.Slider.ActualWidth / 2) / maxmoveX * 2d - 1d));
-            YDeflection = (((p.Y - this.Slider.ActualHeight / 2) / maxmoveY * 2d - 1d));
-        }
-
-
-
-        private void TouchableThing_TouchLeave(object sender, TouchEventArgs e)
-        {
-            isDragging = false;
-        }
 
         #region DependencyProperty
 

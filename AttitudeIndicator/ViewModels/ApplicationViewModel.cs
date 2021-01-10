@@ -16,11 +16,14 @@ namespace AttitudeIndicator.ViewModels
             AirPlaneMatrixTransform = new Matrix3D();
             SerialDataConnection = new SerialCommunicationViewModel(new SerialMessageProcessor(this));
 
-            // for debugging
-            //SerialDataConnection.SelectedPortName = "COM4";
-            //SerialDataConnection.Connected = true;
-
             Broadcaster = new UdpBroadcast(this);
+
+            this.Modes= new List<InputMode>()
+            {
+                new ManualMode(this),
+                new SerialInput(this)
+            };
+
         }
 
 
@@ -104,10 +107,8 @@ namespace AttitudeIndicator.ViewModels
         /// <summary>
         /// Viewmodel for Serial Input!
         /// </summary>
-        public SerialCommunicationViewModel SerialDataConnection
-        {
-            get; set;
-        }
+        public SerialCommunicationViewModel SerialDataConnection { get; set; } 
+            
 
 
         /// <summary>
@@ -191,12 +192,29 @@ namespace AttitudeIndicator.ViewModels
         }
 
 
-        public static List<InputMode> ModeList { get; } = new List<InputMode>()
+        public List<InputMode> Modes { get;} 
+
+
+        private InputMode _selectedMode;
+
+        public InputMode SelectedMode 
         {
-            new InputMode(){Name = "Hardware Input"},
-            new InputMode(){Name = "Manual Input"}
-        };
-            
+            get => _selectedMode;
+            set
+            {
+                if (value == _selectedMode) return;
+
+                // NEW
+                value?.Enable();
+
+                //OLD
+                _selectedMode?.Disable();
+
+                _selectedMode = value;
+
+            }
+        }
+
 
 
         public System.Windows.Visibility JoyStickVisibility { get; set; } = System.Windows.Visibility.Collapsed;
@@ -210,9 +228,57 @@ namespace AttitudeIndicator.ViewModels
 
     }
 
-    public class InputMode
+    public interface InputMode
     {
-        public String Name { get; set; }
-        // todo
+        string Name { get; }
+        void Enable();
+        void Disable();
     }
+
+    public class ManualMode : InputMode
+    {
+        public string Name => "ManualMode";
+
+        public ApplicationViewModel AppVM {get;}
+
+        public ManualMode(ApplicationViewModel App)
+        {
+            AppVM = App;
+        }
+
+        public void Disable()
+        {
+            AppVM.JoyStickVisibility = System.Windows.Visibility.Collapsed;
+        }
+
+        public void Enable()
+        {
+            AppVM.JoyStickVisibility = System.Windows.Visibility.Visible;
+        }
+    }
+
+    public class SerialInput : InputMode
+    {
+        public string Name => "SerialMode";
+
+
+        public ApplicationViewModel AppVM {get;}
+
+        public SerialInput(ApplicationViewModel App)
+        {
+            AppVM = App;
+        }
+
+        public void Disable()
+        {
+            AppVM.SerialDataConnection.Connected = false;
+        }
+
+        public void Enable()
+        {
+            AppVM.SerialDataConnection.Connected = true;
+        }
+    }
+
+
 }

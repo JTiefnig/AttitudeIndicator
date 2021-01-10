@@ -17,6 +17,9 @@ namespace AttitudeIndicator.ViewModels
         public SerialCommunicationViewModel(SerialMessageProcessor prcessor)
         {
             MessageProcessor = prcessor;
+
+            SelectedPortName = PortList.FirstOrDefault();
+            
         }
 
 
@@ -93,14 +96,6 @@ namespace AttitudeIndicator.ViewModels
             {
                 Console.WriteLine(exc.Message);
             }
-
-            
-            
-            
-            
-
-            
-
         }
 
         public void Disconnect()
@@ -110,22 +105,15 @@ namespace AttitudeIndicator.ViewModels
         }
 
 
-        public ObservableCollection<String> PortList
-        {
-            get
-            {
-                var list = SerialPort.GetPortNames();
-                return new ObservableCollection<string>(list);
-            }
-        }
+        public ObservableCollection<String> PortList => 
+            new ObservableCollection<string>(SerialPort.GetPortNames());
+            
+        
 
         public String SelectedPortName
         {
             get; set;
         }
-
-
-
 
         /// <summary>
         /// Storing 

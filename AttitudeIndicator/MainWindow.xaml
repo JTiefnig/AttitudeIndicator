@@ -96,8 +96,9 @@
           <fa:ImageAwesome Icon="MoonOutline" Height="20"/>
         </ToggleButton>
         <ComboBox Width="120" Margin="3" DockPanel.Dock="Left"
-                  SelectedItem="{Binding SelectedMode}" 
-                  ItemsSource="{Binding ModeList}">
+                  SelectedIndex="0"
+                  SelectedItem="{Binding SelectedMode, Mode=TwoWay}" 
+                  ItemsSource="{Binding Modes}">
           <ComboBox.ItemTemplate>
             <DataTemplate>
               <TextBlock Text="{Binding Name}"/>
