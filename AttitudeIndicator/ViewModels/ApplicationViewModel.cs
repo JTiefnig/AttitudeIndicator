@@ -75,25 +75,18 @@ namespace AttitudeIndicator.ViewModels
         /// Conversion of Euler angles to quaternion
         /// </summary>
         void EulerAnglesToRotation()
-        {
-
+        { 
             if (this.ProcessDirection != TransformDirection.None)
                 return;
 
             this.ProcessDirection = TransformDirection.EulerToQuaternion;
 
-            var q = new Quaternion(new Vector3D(0, 0, 1), Psi);
-            q *= new Quaternion(new Vector3D(0, 1, 0), Theta);
-            q *= new Quaternion(new Vector3D(1, 0, 0), Phi);
-
-            this.Rotation = q;
+            this.Rotation = TransformationHelper.UnitQuaternionFromEulerAngles(Psi, Theta, Phi);
             var mat = new Matrix3D();
-            mat.Rotate(q);
+            mat.Rotate(this.Rotation);
             this.AirPlaneMatrixTransform = mat;
 
             this.ProcessDirection = TransformDirection.None;
-
-
         }
 
 
