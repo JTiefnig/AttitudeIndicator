@@ -68,13 +68,18 @@ namespace AttitudeIndicator
             return new Vector3D(phi, theta, psi);
         }
 
+
         public static Quaternion UnitQuaternionFromEulerAngles(double Psi, double Theta, double Phi)
         {
             var q = new Quaternion(new Vector3D(0, 0, 1), Psi);
             q *= new Quaternion(new Vector3D(0, 1, 0), Theta);
             q *= new Quaternion(new Vector3D(1, 0, 0), Phi);
+
             return q;
         }
+
+
+
 
         /// <summary>
         /// Calculating Euler Angles form Quaternion... 
