@@ -70,7 +70,6 @@
     <Compile Include="GimbalVisual3D.cs" />
     <Compile Include="HorizontCanvas.cs" />
     <Compile Include="NotchRing.cs" />
-    <Compile Include="PieSlice.cs" />
     <Compile Include="QuaternionDisplay.xaml.cs">
       <DependentUpon>QuaternionDisplay.xaml</DependentUpon>
     </Compile>

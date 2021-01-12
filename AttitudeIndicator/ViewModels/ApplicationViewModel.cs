@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace AttitudeIndicator.ViewModels
 {
@@ -15,6 +16,7 @@ namespace AttitudeIndicator.ViewModels
         {
             AirPlaneMatrixTransform = new Matrix3D();
             SerialDataConnection = new SerialCommunicationViewModel(new SerialMessageProcessor(this));
+
 
             Broadcaster = new UdpBroadcast(this);
 
@@ -40,7 +42,6 @@ namespace AttitudeIndicator.ViewModels
             EulerToQuaternion
         }
         private TransformDirection ProcessDirection = TransformDirection.None;
-
 
 
         /// <summary>
@@ -92,8 +93,6 @@ namespace AttitudeIndicator.ViewModels
             this.AirPlaneMatrixTransform = mat;
 
             this.ProcessDirection = TransformDirection.None;
-
-
         }
 
 
@@ -107,8 +106,10 @@ namespace AttitudeIndicator.ViewModels
         /// <summary>
         /// Viewmodel for Serial Input!
         /// </summary>
-        public SerialCommunicationViewModel SerialDataConnection { get; set; } 
-            
+        public SerialCommunicationViewModel SerialDataConnection { get; set; }
+
+
+
 
 
         /// <summary>
@@ -212,16 +213,31 @@ namespace AttitudeIndicator.ViewModels
 
                 _selectedMode = value;
 
+                OnPropertyChanged(nameof(SelectedMode));
             }
         }
 
+        private System.Windows.Visibility _joyStickVisibility
+            = System.Windows.Visibility.Collapsed;
 
-
-        public System.Windows.Visibility JoyStickVisibility { get; set; } = System.Windows.Visibility.Collapsed;
-
-
+        public System.Windows.Visibility JoyStickVisibility
+        {
+            get => _joyStickVisibility;
+            set
+            {
+                if (value == _joyStickVisibility)
+                    return;
+                _joyStickVisibility = value;
+                OnPropertyChanged(nameof(JoyStickVisibility));
+            }
+        } 
 
         public Rotator Rotator => new Rotator(this);
+
+        public ICommand RecenterCommand => new RelayCommand(() => 
+            {
+                this.Rotation = new Quaternion();
+            });
 
         #endregion
 

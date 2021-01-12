@@ -18,8 +18,8 @@ namespace AttitudeIndicator.ViewModels
         {
             MessageProcessor = prcessor;
 
-            SelectedPortName = PortList.FirstOrDefault();
-            
+            // for debugging
+            _selectedPortName = PortList.FirstOrDefault();
         }
 
 
@@ -33,7 +33,7 @@ namespace AttitudeIndicator.ViewModels
         public int Baud { get; set; } = 115200; // Standard for HC-05 Bluetooth controller
 
 
-        public void Connect()
+        private void Connect()
         {
             try
             {
@@ -47,28 +47,27 @@ namespace AttitudeIndicator.ViewModels
 
                 Port.PinChanged += SerialEvent;
 
-
+                Connected = true;
             }
             catch(Exception e)
             {
+                Connected = false;
                 MessageBox.Show(e.Message);
             }
             
         }
 
-
         void SerialEvent(object sender, SerialPinChangedEventArgs e)
         {
-            Console.WriteLine("event Happend :" +
-                e.EventType.ToString());
+            if(e.EventType == SerialPinChange.Break)
+            {
+                this.Connected = false;
+            }
         }
 
         private void DataHandler(object sender, SerialDataReceivedEventArgs e)
         {
             var sp = sender as SerialPort;
-
-            
-            
 
             try
             {
@@ -98,25 +97,46 @@ namespace AttitudeIndicator.ViewModels
             }
         }
 
-        public void Disconnect()
+        private void ReConnect()
         {
-            Port?.Close();
-            Port.Dispose();
+            Disconnect();
+            Connect();
+        }
+
+
+        private void Disconnect()
+        {
+            try
+            {
+                Port?.Close();
+                Port?.Dispose();
+                Connected = false;
+            }
+            catch { }
         }
 
 
         public ObservableCollection<String> PortList => 
             new ObservableCollection<string>(SerialPort.GetPortNames());
-            
-        
 
+
+        private String _selectedPortName;
         public String SelectedPortName
         {
-            get; set;
+            get=> _selectedPortName;
+            set
+            {
+                if (value == _selectedPortName)
+                    return;
+                _selectedPortName = value;
+
+                if(Connected)
+                    ReConnect();
+            }
         }
 
         /// <summary>
-        /// Storing 
+        /// The State of the connection 
         /// </summary>
         private bool _connected = false;
         public bool Connected

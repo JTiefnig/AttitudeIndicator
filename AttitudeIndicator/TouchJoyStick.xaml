@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AttitudeIndicator"
-             MinHeight="320"
-             MinWidth="420"
+             MinHeight="260"
+             MinWidth="360"
              mc:Ignorable="d">
   <Grid Background="Transparent">
     <Grid.Resources>
-      <GridLength x:Key="BoundingSize">60</GridLength>
+      <GridLength x:Key="BoundingSize">30</GridLength>
     </Grid.Resources>
     
     <Grid.RowDefinitions>

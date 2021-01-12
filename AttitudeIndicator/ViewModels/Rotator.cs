@@ -9,7 +9,7 @@ using System.Windows.Media.Media3D;
 
 namespace AttitudeIndicator.ViewModels
 {
-    public class Rotator: BaseViewModel
+    public class Rotator: ICommand
     {
         public ApplicationViewModel AppVM { get; }
 
@@ -18,77 +18,13 @@ namespace AttitudeIndicator.ViewModels
             AppVM = AppViewModel;
         }
 
-
-
-        private Task JogXTask;
-
-        private void JogXAction()
-        {
-            while (jogSpeedX != 0)
-            {
-
-                var dA = LoopDelay / 1000.0 * Turnspeed * jogSpeedX;
-                var D_Q = new Quaternion(new Vector3D(1, 0, 0), dA);// just for debbuggnig
-                Thread.Sleep(LoopDelay);
-                AppVM.Rotation *= D_Q;
-            }
-        }
-
-
-
-        private double jogSpeedX=0;
-
-        #region Properties
-
-        public ICommand JogX => new RotationJogger(AppVM, new Vector3D(0, 0, 1));
-        public ICommand JogY => new RotationJogger(AppVM, new Vector3D(0, 1, 0));
-
-
-        //public ICommand JogX => new RelayParameterizedCommand((a)=> {
-        //    var val = (double)a;
-        //    jogSpeedX = val;
-
-        //    if (JogXTask?.Status != TaskStatus.Running && val != 0)
-        //    {
-        //        JogXTask = new Task(()=>JogXAction());
-        //        JogXTask.Start();
-        //    }
-        //});
-
-
-
-        //public ICommand JogY => new RelayParameterizedCommand((a)=> { });
-
-        public static int LoopDelay = 80;
-
-        /// <summary>
-        /// Maximum Turning Speed in Degree Per second
-        /// </summary>
-        public double Turnspeed { get; set; } = 20;
-
-        #endregion
-    }
-
-
-    public class RotationJogger : ICommand
-    {
-
-        public ApplicationViewModel Rotation { get; private set; }
-        public Vector3D Axis { get;  }
-
-        public RotationJogger(ApplicationViewModel rotation, Vector3D axis)
-        {
-            Rotation = rotation;
-            Axis = axis;
-        }
-
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter) => true;
 
         private Task Jogger;
 
-        private double jogspeed =0;
+        private Vector3D jogspeed = new Vector3D();
 
         /// <summary>
         /// Stetting the jog Speed 
@@ -96,29 +32,69 @@ namespace AttitudeIndicator.ViewModels
         /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
-            jogspeed = (double)parameter;
+            jogspeed = (Vector3D)parameter;
 
 
-            if(Jogger?.Status != TaskStatus.Running && jogspeed!=0)
+            if (Jogger?.Status != TaskStatus.Running && jogspeed.Length != 0)
             {
                 Jogger = new Task(() => jog());
                 Jogger.Start();
             }
-
-
-
         }
 
         private void jog()
         {
-            while(jogspeed != 0)
+            while (jogspeed.Length != 0)
             {
-                Rotation.Rotation *= new Quaternion(Axis, jogspeed);
-                Thread.Sleep(50);
+                var scaledJS = jogspeed * Turnspeed * LoopDelay / 1000.0;
+
+                if(Mode == ControlMode.AirplaneConrol)
+                {
+                    var q = AppVM.Rotation;
+                    q *= new Quaternion(new Vector3D(0, 0, 1), scaledJS.Z);
+                    q *= new Quaternion(new Vector3D(0, 1, 0), scaledJS.Y);
+                    q *= new Quaternion(new Vector3D(1, 0, 0), scaledJS.X);
+                    AppVM.Rotation = q;
+
+                }else if(Mode == ControlMode.AngleJogger)
+                {
+                    var curr_orient = new Vector3D(AppVM.Psi, AppVM.Theta, AppVM.Phi);
+
+                    curr_orient += scaledJS;
+
+                    AppVM.Psi = curr_orient.X;
+                    AppVM.Theta = curr_orient.Y;
+                    AppVM.Phi = curr_orient.Z;
+
+                }
+
+                Thread.Sleep(LoopDelay);
             }
         }
 
+
+        public enum ControlMode
+        {
+            AngleJogger,
+            AirplaneConrol
+        }
+
+        public ControlMode Mode
+        {
+            get; set;
+        } = ControlMode.AirplaneConrol;
+
+        public static int LoopDelay = 80;
+
+        /// <summary>
+        /// Maximum Turning Speed in Degree Per second
+        /// </summary>
+        public double Turnspeed { get; set; } = 80;
+
     }
+
+
+
 
 
 

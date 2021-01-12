@@ -87,13 +87,13 @@
           <ToggleButton.ToolTip>
             <TextBlock>Show Gimbal Rings</TextBlock>
           </ToggleButton.ToolTip>
-          <fa:ImageAwesome Icon="Compass" Height="20"/>
+          <fa:ImageAwesome Icon="Compass" Height="25"/>
         </ToggleButton>
         <ToggleButton x:Name="DarkModeButton" DockPanel.Dock="Right" Margin="2" Click="DarkModeButton_Click">
           <ToggleButton.ToolTip>
             <TextBlock>NightMode</TextBlock>
           </ToggleButton.ToolTip>
-          <fa:ImageAwesome Icon="MoonOutline" Height="20"/>
+          <fa:ImageAwesome Icon="MoonOutline" Height="25"/>
         </ToggleButton>
         <ComboBox Width="120" Margin="3" DockPanel.Dock="Left"
                   SelectedIndex="0"
@@ -118,54 +118,52 @@
           <Border Style="{StaticResource LightBorder}" Margin="5">
             <StackPanel>
               <TextBlock>Hardware link</TextBlock>
-              <StackPanel  Orientation="Horizontal" DataContext="{Binding SerialDataConnection}" >
-                <ComboBox Width="120" Margin="3" SelectedItem="{Binding SelectedPortName}" ItemsSource="{Binding PortList}"/>
-                <ToggleButton DockPanel.Dock="Top" Height="29" Padding="2" IsChecked="{Binding Connected}">
-                  <fa:ImageAwesome Icon="CircleOutlineNotch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spin="{Binding Connected}" SpinDuration="4"/>
-                </ToggleButton>
-              </StackPanel>
+              <DockPanel  DataContext="{Binding SerialDataConnection}" >
+                <fa:ImageAwesome Icon="CircleOutlineNotch" Height="20" Spin="{Binding Connected}" SpinDuration="4"/>
+                <ComboBox Margin="3" SelectedItem="{Binding SelectedPortName}" ItemsSource="{Binding PortList}"/>
+              </DockPanel>
             </StackPanel>
           </Border>
           <local:UDPSettingsControl DataContext="{Binding Broadcaster}" Height="130" Margin="5"/>
         </StackPanel>
       </Expander>
-
-      <!--Expander for the manual Controls By sliders-->
-      <!--<Expander Header="Manual Input" Foreground="{DynamicResource ThemeForeground}">
-        <Border Style="{StaticResource LightBorder}">
-          <StackPanel>
-            <Slider  Name = "slider" 
-         HorizontalAlignment="Stretch"
-         Maximum = "180" 
-               Minimum="-180"
-         Value = "{Binding Psi}" />
-            <Slider Margin="2" DockPanel.Dock="Top" Name = "sliderTheta" 
-         HorizontalAlignment="Stretch"
-         Maximum = "90" 
-               Minimum="-90"
-         Value = "{Binding Theta}" />
-            <Slider  DockPanel.Dock="Top" Name = "sliderPhi" 
-         HorizontalAlignment="Stretch"
-         Maximum = "180" 
-               Minimum="-180"
-         Value = "{Binding Phi}" />
-          </StackPanel>
-        </Border>
-      </Expander>-->
+      
+      <!-- Addional controls for manual input -->
+      <Border Style="{StaticResource LightBorder}"
+              Visibility="{Binding JoyStickVisibility}"
+               Margin="3 10 3 3">
+        <StackPanel>
+          <Label Content="Manual Input Setting" FontSize="14"/>
+          <DockPanel>
+            <Button Command="{Binding RecenterCommand}"
+              ToolTip="Recenter">
+              <fa:ImageAwesome Icon="DotCircleOutline" Height="25"/>
+            </Button>
+            <ComboBox Margin="3" 
+                  HorizontalAlignment="Stretch"
+                  SelectedIndex="0"
+                  SelectedItem="{Binding Rotator.Mode}" 
+                  ItemsSource="{Binding Rotator.ControlMode}"/>
+          </DockPanel>
+        </StackPanel>
+      </Border>
 
     </StackPanel>
     
     
     <!-- Positioning of the Controlelement in front of -->
-    
-     <local:TouchJoyStick DockPanel.Dock="Left" 
-                          HorizontalAlignment="Left" 
-                          VerticalAlignment="Bottom" 
-                          Visibility="{Binding JoyStickVisibility}"
+    <DockPanel LastChildFill="False"
+      HorizontalAlignment="Left" 
+      VerticalAlignment="Bottom" 
+      Visibility="{Binding JoyStickVisibility}">
+      
+      <local:TouchJoyStick
                           Foreground="{DynamicResource ThemeForeground}"
                           Command="{Binding Rotator}"
-                          Margin="-40"
                           />
+                        
+    </DockPanel>
+       
     
   </Grid>
 </Window>
