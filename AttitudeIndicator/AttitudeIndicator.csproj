@@ -67,6 +67,7 @@
     <Compile Include="EulerAnglesDisplay.xaml.cs">
       <DependentUpon>EulerAnglesDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GimbalVisual3D.cs" />
     <Compile Include="HorizontCanvas.cs" />
     <Compile Include="NotchRing.cs" />
     <Compile Include="QuaternionDisplay.xaml.cs">

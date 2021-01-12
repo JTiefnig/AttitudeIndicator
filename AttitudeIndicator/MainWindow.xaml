@@ -129,24 +129,18 @@
       </Expander>
       
       <!-- Addional controls for manual input -->
-      <Border Style="{StaticResource LightBorder}"
+      
+        
+      <Button Command="{Binding RecenterCommand}"
               Visibility="{Binding JoyStickVisibility}"
-               Margin="3 10 3 3">
-        <StackPanel>
-          <Label Content="Manual Input Setting" FontSize="14"/>
-          <DockPanel>
-            <Button Command="{Binding RecenterCommand}"
               ToolTip="Recenter">
-              <fa:ImageAwesome Icon="DotCircleOutline" Height="25"/>
-            </Button>
-            <ComboBox Margin="3" 
-                  HorizontalAlignment="Stretch"
-                  SelectedIndex="0"
-                  SelectedItem="{Binding Rotator.Mode}" 
-                  ItemsSource="{Binding Rotator.ControlMode}"/>
-          </DockPanel>
+        <StackPanel Orientation="Horizontal">
+          <fa:ImageAwesome Icon="DotCircleOutline" Height="25"/>
+          <Label Content="Reset Orientation" FontSize="14"/>
         </StackPanel>
-      </Border>
+      </Button>
+        
+      
 
     </StackPanel>
     
